@@ -1,0 +1,1 @@
+console.log("欢迎踩点邹成卓的博客，在这里与你一起分享生活，分享技术。\n%c联系方式: http://zoucz.com/about/", "color:red");

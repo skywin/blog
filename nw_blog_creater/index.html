@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>博客编写发布工具</title>
+    <link rel="stylesheet" href="lib/editor/dist/editor.css">
+    <script src="lib/editor/dist/editor.js"></script>
+    <script src="lib/editor/dist/marked.js"></script>
+    <script>
+        var fs=require("fs");
+
+        window.onload=function(){
+            var editor = new Editor({
+                element: document.getElementById('editor')
+            });
+            editor.render();
+
+        }
+    </script>
+</head>
+<body>
+
+    <textarea></textarea>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "blog_writer",
+  "version": "1.0.0",
+  "description": "桌面版blog编写发布工具",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "405966530@qq.com",
+  "license": "ISC",
+  "main": "index.html",
+  "window": {
+    "title": "blog writer",
+    "icon": "assest/img/logo.png",
+    "toolbar": false,
+    "width": 1280,
+    "height": 800,
+    "min_width": 400,
+    "min_height": 200
+  },
+  "webkit": {
+    "plugin": true,
+    "java": false,
+    "page-cache": false
+  },
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "jszip": "^2.5.0"
+  }
+}

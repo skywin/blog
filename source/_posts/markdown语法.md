@@ -1,7 +1,13 @@
 ---
 title: markdown语法
 date: 2016-01-14 10:32:13
-tags: markdown语法，方便随时查阅
+mark: 辞旧迎新
+categories:
+  - 剪贴板
+  - 观点和感想
+tags: 
+  - 分享
+  - 团队
 ---
 Markdown 是一种轻量级标记语言，能将文本换成有效的XHTML(或者HTML)文档，它的目标是实现易读易写，成为一种适用于网络的书写语言。
 

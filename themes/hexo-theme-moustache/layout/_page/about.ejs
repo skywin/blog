@@ -1,0 +1,66 @@
+<div class="container aboutme">
+	<div class="cate-wraper post">
+		<h2>
+		  <%- partial("../_partial/post/rss.ejs") %>
+			<a href="/"><%- config.author %></a> » 关于
+      <em  class="arrow-expend">▾
+        <ul>
+          <li><a href="<%- url_for("/entry/") %>">博客</a></li>
+          <li><a href="<%- url_for("/message/") %>">留言</a></li>
+          <li><a href="<%- url_for("/demo/") %>">实验室</a></li>
+				<li><a href="<%- url_for("/comments/") %>">最近评论</a></li>
+          <li><a href="<%- url_for("/friends/") %>">友情链接</a></li>
+        </ul>
+      </em>
+		</h2>
+		<div>
+			<strong class="title">关于我<span> / About Me</span></strong>
+			<div>
+				<a class="site-avatar" href="<%- url_for(theme.imgs.avatar) %>"><img src="<%- url_for(theme.imgs.avatar150) %>" height="100" width="100" alt="<%- config.author %>"></a>
+				<p>邹成卓</p>
+				<p>北京交通大学09级</p>
+				<p>2012.10~2013.11 搜狗</p>
+				<p>2015.12-		   腾讯</p>
+			</div>
+			<strong class="title">关于内容<span> / About The Website</span></strong>
+			<div>
+				<p>版权声明：「自由转载-非商用-非衍生-保持署名」（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</p>
+				<p>所有文章非特别说明皆为原创。由于文章表述或者内容可能存在诸多错误，所以部分内容会作修改，为保证转载信息与源同步，转载请注明文章出处！谢谢合作 :-) </p>
+				<p>文章为个人观点，不代表服务的公司。</p>
+			</div>
+			<strong class="title">订阅地址<span> / The RSS Address</span></strong>
+			<div>
+				<p>本网站 RSS 订阅地址： <a href="<%- config.url %><%- url_for(theme.pages.feed) %>"><%- config.url %><%- url_for(theme.pages.feed) %></a></p>
+			</div>
+			<strong class="title">关于主题<span> / About The Theme</span></strong>
+			<div>
+				<p>本站基于 <a href="https://hexo.io">Hexo</a> 构建，博客主题来自小胡子哥 http://www.barretlee.com/about/。感谢小胡子哥。</p>
+			</div>
+			<strong class="title" name="contact" id="contact">其他信息<span> / External Links</span></strong>
+			<div>
+				<ul>
+					<li>Github：
+						<a href="<%- theme.social.github %>" target="_blank">zouchengzhuo</a>
+					</li>
+					<li>Social：
+						<a href="<%- theme.social.weibo %>" target="_blank">新浪微博</a> <span class="grey"></span>
+					</li>
+					<li>E-mail：
+						<a href="mailto:<%- theme.social.mail %>" target="_blank">邹成卓的QQ邮箱</a>
+					</li>
+					<li>Old Blog：
+						<a href="<%- theme.social.cnblog %>" target="_blank">Here</a> <span class="grey">- 博客园TZYY</span>
+					</li>
+					<li>微信id：<span>zouchengzhuo</span>
+						<p><img class="about-wechart" src="/wechart.png" alt="扫码添加邹成卓的微信" width="150" /></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="aboutme-modify-time text-info">
+			最后修改时间：<%- date(page.updated, "YYYY年MM月DD日 hh:mm:ss") %>
+		</div>
+		<%- partial("page_footer") %>
+	</div>
+</div>
+<%- partial("../_partial/sidebar") %>

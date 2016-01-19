@@ -3,29 +3,31 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 邹成卓的blog
-subtitle:
-description:
-author: John Doe
-language:
-timezone:
+title: 邹成卓的个人网站
+subtitle: Chengzhuo Zou's personal website
+description: 想法，随笔，思考，感叹，瞬间，笔记...
+author: 邹成卓
+language: zh-cn
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
-root: /blog
-permalink: :year/:month/:day/:title/
+url: http://www.zoucz.com
+root: /
+permalink: blog/:year/:month/:day/:title/
 permalink_defaults:
 
 # Directory
 source_dir: source
 public_dir: public
-tag_dir: tags
-archive_dir: archives
-category_dir: categories
-code_dir: downloads/code
-i18n_dir: :lang
+tag_dir: blog/tags
+archive_dir: blog/archives
+category_dir: blog/categories
+code_dir: blog/downloads/code
+i18n_dir: blog/:lang
 skip_render:
+
+
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -44,7 +46,7 @@ highlight:
   tab_replace:
 
 # Category & Tag
-default_category: uncategorized
+default_category: other
 category_map:
 tag_map:
 
@@ -63,7 +65,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: hexo-theme-moustache
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

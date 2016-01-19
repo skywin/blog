@@ -1,0 +1,20 @@
+<div class="container message">
+	<div class="cate-wraper post">
+		<h2>
+      <%- partial("../_partial/post/rss.ejs") %>
+			<a href="/"><%- config.author %></a> » 留言
+      <em  class="arrow-expend">▾
+        <ul>
+          <li><a href="<%- url_for("/entry/") %>">博客</a></li>
+          <li><a href="<%- url_for("/about/") %>">关于</a></li>
+          <li><a href="<%- url_for("/demo/") %>">实验室</a></li>
+        <li><a href="<%- url_for("/comments/") %>">最近评论</a></li>
+          <li><a href="<%- url_for("/friends/") %>">友情链接</a></li>
+        </ul>
+      </em>
+		</h2>
+		<p><%- site.data.text.message %></p>
+		<%- partial("page_footer") %>
+	</div>
+</div>
+<%- partial("../_partial/sidebar") %>
