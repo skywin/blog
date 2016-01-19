@@ -3,7 +3,7 @@ Thumbs.db
 db.json
 *.log
 node_modules/
-public/
+build/
 .deploy*/
 nwjs-v0.12.3-win-x64/
 .idea/
