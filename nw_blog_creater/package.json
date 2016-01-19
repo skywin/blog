@@ -10,7 +10,7 @@
   "main": "index.html",
   "window": {
     "title": "blog writer",
-    "icon": "assest/img/logo.png",
+    "icon": "avatar150.png",
     "toolbar": false,
     "width": 1280,
     "height": 800,

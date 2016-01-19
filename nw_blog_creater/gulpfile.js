@@ -13,7 +13,9 @@ gulp.task("default",function(){
     // 3.运行cd ../nwjs-v0.12.3-win-x64 & copy /b nw.exe+app.nw app.exe & app.exe
     // 即可打开exe文件调试
     zipFiles(["index.html","package.json","lib"]);
-    exec("cd ../nwjs-v0.12.3-win-x64 & copy /b nw.exe+app.nw app.exe & app.exe");
+    exec("cd ../nwjs-v0.12.3-win-x64 & copy /b nw.exe+app.nw app.exe & app.exe",function(){
+        //console.log("编辑器已生成！");
+    });
 });
 
 function zipFiles(files){

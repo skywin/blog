@@ -30,7 +30,7 @@ skip_render:
 
 
 # Writing
-new_post_name: :title.md # File name of new posts
+new_post_name: :year-:month-:day-:title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
@@ -55,7 +55,7 @@ tag_map:
 ## You can customize the date format as defined in
 ## http://momentjs.com/docs/#/displaying/format/
 date_format: YYYY-MM-DD
-time_format: HH:mm:ss
+time_format: hh:mm:ss
 
 # Pagination
 ## Set per_page to 0 to disable pagination
@@ -69,5 +69,14 @@ theme: hexo-theme-moustache
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
+#https://gitcafe.com/tzyy/blog.git
+  #https://github.com/zouchengzhuo/blog.git
 deploy:
-  type:
+- type: git
+  repo: git@gitcafe.com:tzyy/blog.git
+  branch: gh-pages
+  message: build at local, send to gitcafe {{ now("YYYY-MM-DD HH:mm:ss") }}
+- type: git
+  repo: git@github.com:zouchengzhuo/blog.git
+  branch: gh-pages
+  message: build at local, send to github {{ now("YYYY-MM-DD HH:mm:ss") }}
