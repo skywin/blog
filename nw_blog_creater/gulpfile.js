@@ -12,7 +12,7 @@ gulp.task("default",function(){
     // 2.将app.nw写入 ../nwjs-v0.12.3-win-x64 目录
     // 3.运行cd ../nwjs-v0.12.3-win-x64 & copy /b nw.exe+app.nw app.exe & app.exe
     // 即可打开exe文件调试
-    zipFiles(["index.html","package.json","lib"]);
+    zipFiles(["index.html","package.json","lib","dist"]);
     exec("cd ../nwjs-v0.12.3-win-x64 & copy /b nw.exe+app.nw app.exe & app.exe",function(){
         //console.log("编辑器已生成！");
     });

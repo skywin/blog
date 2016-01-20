@@ -253,7 +253,7 @@ var operation = {
         });
     },
     insertWeibo: function(){
-        var htmlStr = '<iframe width="330" height="350" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=330&height=350&fansRow=1&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=1812166904&verifier=73dc4ca5&dpc=1"></iframe>';
+        var htmlStr = '<iframe width="330" height="350" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=330&height=350&fansRow=1&ptype=1&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=5444848999&verifier=73dc4ca5&dpc=1"></iframe>';
         if(/\/entry\//.test(window.location.href) && !isMobile.any()
             && ($(window).width() > 992) && !$(".share_self").size()){
             $(window).on("load", function(){
@@ -363,7 +363,7 @@ var operation = {
                     title = $(".post-title").text() && ("文章《" + weiboName + " " +  $(".post-title").text() + "》");
                     if(!title) title += "好站分享 " + weiboName + " ";
                     title += $("meta[property='og:description']").attr("content").slice(0, 95);
-                    var shareUrl = "http://service.weibo.com/share/share.php?appkey=1812166904&title=" +
+                    var shareUrl = "http://service.weibo.com/share/share.php?appkey=5444848999&title=" +
                     title + "&url=" + local + "&searchPic=false&style=simple";
                     $.ajax({
                         type: "POST",
@@ -532,7 +532,7 @@ var operation = {
         title += $("meta[property='og:description']").attr("content").slice(0, 95);
 
         $("#share-weibo").off().on("click", function(){
-            var url = "http://service.weibo.com/share/share.php?appkey=1812166904&title=" +
+            var url = "http://service.weibo.com/share/share.php?appkey=5444848999&title=" +
             title + "&url=" + local + "&searchPic=false&style=simple"; // &pic=a.jpg;
 
             operation._shareWin(url);
@@ -854,26 +854,28 @@ $(window).on("load", function(){
             // weibo
             $("html").attr("xmlns:wb", "http://open.weibo.com/wb");
             $("head").append('<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>');
-            $("#followMeOnWeibo").html('<wb:follow-button uid="1812166904" type="red_1" width="67" height="24" style="vertical-align:middle;display:inline-block" ></wb:follow-button>');
+            $("#followMeOnWeibo").html('<wb:follow-button uid="5444848999" type="red_1" width="67" height="24" style="vertical-align:middle;display:inline-block" ></wb:follow-button>');
         });
     }
 
     setTimeout(function(){
+        //百度流量统计
         var _hmt = _hmt || [];
         (function() {
             var hm = document.createElement("script");
-            hm.src = "//hm.baidu.com/hm.js?14788c3dc5c09194b1bad2d5ded36949";
+            hm.src = "//hm.baidu.com/hm.js?fd00e32b4ab660903ed5736c5878bc2d";
             var s = document.getElementsByTagName("script")[0];
             s.parentNode.insertBefore(hm, s);
         })();
 
+        //google流量统计
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-67248043-1', 'auto');
+        ga('create', 'UA-72634417-1', 'auto');
         ga('send', 'pageview');
+
     }, 2000);
 });
 
@@ -1094,7 +1096,7 @@ $(".a-comments").on("click", function(){
     if(ret.length) {
         var str = "<ul>";
         $.each(ret, function(i, item){
-            if(item.author == "邹成卓" && item.avatar.indexOf("1812166904") > -1 && i !== 0) {
+            if(item.author == "邹成卓" && item.avatar.indexOf("5444848999") > -1 && i !== 0) {
                 var isMe = true;
             }
             str += '<li' + (isMe ? " style='margin-left:30px'" : "") + '><img src="' +
