@@ -10,7 +10,8 @@ module.exports={
             './src/js/index.js'
         ],
     output:{
-        path:__dirname+"/dist/js",
+        //配合gulp使用的时候注释掉path配置，生成目录在gulp中配置
+        //path:"./dist/js",
         publicPath: '/dist/js/',
         filename:"[name].js"
 
@@ -24,6 +25,7 @@ module.exports={
             { test: /\.css$/, loader: 'style-loader!css-loader' },
             {test:/\.js[x]?$/,exclude:/lib|node_modules/,loader:"babel-loader?presets[]=es2015&presets[]=react"}
         ]
-    }
-
+    },
+    //在nw中运行时启用
+    //target: 'node-webkit'
 }

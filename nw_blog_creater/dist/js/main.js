@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c7d9c75c0582dab84459"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ca1a4cf0a77fe7799a69"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -8021,13 +8021,21 @@
 
 	var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
 
+	var _config = __webpack_require__(284);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _draft = __webpack_require__(289);
+
+	var _draft2 = _interopRequireDefault(_draft);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/**
 	 * Created by czzou on 2016/1/20.
 	 */
 
-	__webpack_require__(284);
+	__webpack_require__(290);
 
 	var nav = _react2.default.createClass({
 	    render: function render() {
@@ -8068,13 +8076,12 @@
 	                            { className: curPath === "/config" ? "active" : "inactive", to: "/config" },
 	                            "config"
 	                        )
-	                    ),
-	                    _react2.default.createElement("li", null)
+	                    )
 	                )
 	            ),
 	            _react2.default.createElement(
 	                "div",
-	                { id: "body" },
+	                { id: "content" },
 	                this.props.children
 	            )
 	        );
@@ -8086,27 +8093,11 @@
 	        return _react2.default.createElement(
 	            "div",
 	            null,
-	            "WRITE"
-	        );
-	    }
-	});
-
-	var draft = _react2.default.createClass({
-	    render: function render() {
-	        return _react2.default.createElement(
-	            "div",
-	            null,
-	            " DRAFT "
-	        );
-	    }
-	});
-
-	var config = _react2.default.createClass({
-	    render: function render() {
-	        return _react2.default.createElement(
-	            "div",
-	            null,
-	            "CONFIG"
+	            _react2.default.createElement(
+	                "span",
+	                null,
+	                "write "
+	            )
 	        );
 	    }
 	});
@@ -8119,9 +8110,9 @@
 	        _reactRouter.Route,
 	        { path: "/", component: nav },
 	        _react2.default.createElement(_reactRouter.IndexRoute, { component: write }),
-	        _react2.default.createElement(_reactRouter.Route, { path: "/write", component: write }),
-	        _react2.default.createElement(_reactRouter.Route, { path: "/draft", component: draft }),
-	        _react2.default.createElement(_reactRouter.Route, { path: "/config", component: config }),
+	        _react2.default.createElement(_reactRouter.Route, { path: "write", component: write }),
+	        _react2.default.createElement(_reactRouter.Route, { path: "draft", component: _draft2.default }),
+	        _react2.default.createElement(_reactRouter.Route, { path: "config", component: _config2.default }),
 	        _react2.default.createElement(_reactRouter.Route, { path: "*", component: write })
 	    )
 	), document.body);
@@ -32270,20 +32261,133 @@
 /* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+
+	var _react = __webpack_require__(77);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Created by czzou on 2016/1/21.
+	 */
+	//var fs=require("fs");
+	//var tags=fs.readFileSync("config/tags.json","utf-8");
+
+	var tags = ["tag1", "tag2"];
+	var cates = ["cate1", "cate2"];
+	__webpack_require__(285);
+
+	module.exports = _react2.default.createClass({
+	    render: function render() {
+	        return _react2.default.createElement(
+	            "form",
+	            { className: "form-horizontal" },
+	            _react2.default.createElement(
+	                "div",
+	                { className: "form-group" },
+	                _react2.default.createElement(
+	                    "label",
+	                    { className: "col-sm-2 control-label" },
+	                    "标签"
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "col-sm-10" },
+	                    tags.map(function (tag) {
+	                        return _react2.default.createElement(
+	                            "span",
+	                            { className: "label label-success" },
+	                            tag,
+	                            " ",
+	                            _react2.default.createElement(
+	                                "span",
+	                                { className: "glyphicon glyphicon-remove" },
+	                                " "
+	                            )
+	                        );
+	                    })
+	                )
+	            ),
+	            _react2.default.createElement(
+	                "div",
+	                { className: "form-group" },
+	                _react2.default.createElement("label", { className: "col-sm-2 control-label" }),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "col-sm-10" },
+	                    _react2.default.createElement("input", { type: "text", className: "form-control shortinput" }),
+	                    _react2.default.createElement(
+	                        "button",
+	                        { className: "btn btn-success" },
+	                        "添加"
+	                    )
+	                )
+	            ),
+	            _react2.default.createElement(
+	                "div",
+	                { className: "form-group" },
+	                _react2.default.createElement(
+	                    "label",
+	                    { className: "col-sm-2 control-label" },
+	                    "分类"
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "col-sm-10" },
+	                    cates.map(function (cate) {
+	                        return _react2.default.createElement(
+	                            "span",
+	                            { className: "label label-success" },
+	                            cate,
+	                            " ",
+	                            _react2.default.createElement(
+	                                "span",
+	                                { className: "glyphicon glyphicon-remove" },
+	                                " "
+	                            )
+	                        );
+	                    })
+	                )
+	            ),
+	            _react2.default.createElement(
+	                "div",
+	                { className: "form-group" },
+	                _react2.default.createElement("label", { className: "col-sm-2 control-label" }),
+	                _react2.default.createElement(
+	                    "div",
+	                    { className: "col-sm-10" },
+	                    _react2.default.createElement("input", { type: "text", className: "form-control shortinput" }),
+	                    _react2.default.createElement(
+	                        "button",
+	                        { className: "btn btn-success" },
+	                        "添加"
+	                    )
+	                )
+	            )
+	        );
+	    }
+	});
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(285);
+	var content = __webpack_require__(286);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(287)(content, {});
+	var update = __webpack_require__(288)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(285, function() {
-				var newContent = __webpack_require__(285);
+			module.hot.accept(286, function() {
+				var newContent = __webpack_require__(286);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -32293,21 +32397,21 @@
 	}
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(286)();
+	exports = module.exports = __webpack_require__(287)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "html,body,#nav_wrapper ul{\r\n    margin:0;\r\n    padding: 0;\r\n}\r\n#nav_wrapper{\r\n    width: 100%;\r\n    height:50px;\r\n    /*line-height: 50px;*/\r\n    background: #1584e8;\r\n}\r\n\r\n#nav_wrapper ul li{\r\n    float:left;\r\n    display: block;\r\n    height:50px;\r\n    margin-right: 3px;\r\n    list-style: none;\r\n    text-align: center;\r\n}\r\n#nav_wrapper ul li:last-child{\r\n    width: 0;\r\n    float: none;\r\n    clear: both;\r\n}\r\n#nav_wrapper ul li,#nav_wrapper ul li a{\r\n    width: 140px;\r\n}\r\n#nav_wrapper ul li a{\r\n    text-decoration: none;\r\n    color:#fff;\r\n    font-family: \"Microsoft Yahei\";\r\n    display: block;\r\n\r\n    height:46px;\r\n    line-height: 46px;\r\n}\r\n#nav_wrapper li a.active,#nav_wrapper li a:hover {\r\n    border-bottom: solid 4px #76ff5f;\r\n\r\n}\r\n\r\n", ""]);
+	exports.push([module.id, ".shortinput{\r\n    width: 200px;\r\n    display: inline-block;\r\n}", ""]);
 
 	// exports
 
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports) {
 
 	/*
@@ -32363,7 +32467,7 @@
 
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -32585,6 +32689,70 @@
 		if(oldSrc)
 			URL.revokeObjectURL(oldSrc);
 	}
+
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _react = __webpack_require__(77);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	module.exports = _react2.default.createClass({
+	    render: function render() {
+	        return _react2.default.createElement(
+	            "div",
+	            null,
+	            " DRAFT555666777 "
+	        );
+	    }
+	}); /**
+	     * Created by czzou on 2016/1/21.
+	     */
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(291);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(288)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(true) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept(291, function() {
+				var newContent = __webpack_require__(291);
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(287)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "html,body,#nav_wrapper ul{\r\n    margin:0;\r\n    padding: 0;\r\n}\r\n#nav_wrapper{\r\n    width: 100%;\r\n    height:50px;\r\n    background: #1584e8;\r\n}\r\n#content{\r\n    overflow: hidden;\r\n}\r\n#nav_wrapper ul li{\r\n    float:left;\r\n    display: block;\r\n    height:50px;\r\n    margin-right: 3px;\r\n    list-style: none;\r\n    text-align: center;\r\n}\r\n#nav_wrapper ul:after{\r\n    content: \"\";\r\n    display: block;\r\n    clear: both;\r\n}\r\n#nav_wrapper ul li,#nav_wrapper ul li a{\r\n    width: 140px;\r\n}\r\n#nav_wrapper ul li a{\r\n    text-decoration: none;\r\n    color:#fff;\r\n    font-family: \"Microsoft Yahei\";\r\n    display: block;\r\n\r\n    height:50px;\r\n    line-height: 45px;\r\n}\r\n#nav_wrapper li a.active,#nav_wrapper li a:hover {\r\n    border-bottom: solid 4px rgba(118,255,95,0.7);\r\n\r\n}\r\n\r\n", ""]);
+
+	// exports
 
 
 /***/ }

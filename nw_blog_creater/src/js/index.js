@@ -3,9 +3,10 @@
  */
 import React from "react";
 import {render} from"react-dom";
-import {Router,Route,Link,IndexRoute} from "react-router";
+import {Router,Route,Link,IndexRoute,Redirect } from "react-router";
 import createBrowserHistory from 'history/lib/createBrowserHistory';
-
+import config from "./component/config/config";
+import draft from "./component/draft/draft";
 require("../css/index.css");
 
 
@@ -20,10 +21,9 @@ var nav = React.createClass({
                         <li ><Link className={curPath==="/write"?"active":"inactive"} to="/write">write</Link></li>
                         <li ><Link className={curPath==="/draft"?"active":"inactive"} to="/draft">draft</Link></li>
                         <li ><Link className={curPath==="/config"?"active":"inactive"} to="/config">config</Link></li>
-                        <li></li>
                     </ul>
                 </div>
-                <div id="body">
+                <div id="content">
                     {this.props.children}
                 </div>
             </div>
@@ -35,34 +35,18 @@ var nav = React.createClass({
 var write=React.createClass({
     render:function(){
         return (
-            <div>WRITE</div>
+            <div><span>write </span></div>
         );
     }
 });
-
-var draft=React.createClass({
-    render:function(){
-        return (
-            <div> DRAFT </div>
-        );
-    }
-});
-
-var config=React.createClass({
-    render:function(){
-        return (
-            <div>CONFIG</div>
-        );
-    }
-})
 
 let history=createBrowserHistory();
 render((<Router history={history}>
         <Route path="/" component={nav}>
             <IndexRoute component={write} />
-            <Route path="/write" component={write} />
-            <Route path="/draft" component={draft} />
-            <Route path="/config" component={config} />
+            <Route path="write" component={write} />
+            <Route path="draft" component={draft} />
+            <Route path="config" component={config} />
             <Route path="*" component={write}/>
         </Route>
     </Router>)
