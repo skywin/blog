@@ -8,7 +8,16 @@ var gulp=require("gulp"),
     JSZip=require("jszip"),
     fs=require("fs"),
     exec = require('child_process').exec;
-gulp.task('webpack', function () {
+
+//生成config文件
+gulp.task("initConfig",function(){
+    var config={
+        base:__dirname
+    }
+    fs.writeFileSync("config.json",JSON.stringify(config));
+});
+
+gulp.task('webpack',["initConfig"], function () {
     var myConfig = Object.create(webpackconfig);
     return gulp
         .src('./src/js/index.js')
@@ -20,7 +29,7 @@ gulp.task("startexe",["webpack"],function(){
     // 2.将app.nw写入 ../nwjs-v0.12.3-win-x64 目录
     // 3.运行cd ../nwjs-v0.12.3-win-x64 & copy /b nw.exe+app.nw app.exe & app.exe
     // 即可打开exe文件调试
-    zipFiles(["index.html","package.json","lib","dist","config"]);
+    zipFiles(["index.html","package.json","config.json","lib","dist"]);
     exec("taskkill /f /im app.exe ",function(){
         exec("cd ../nwjs-v0.12.3-win-x64 & copy /b nw.exe+app.nw app.exe & app.exe",function(){
             process.exit();

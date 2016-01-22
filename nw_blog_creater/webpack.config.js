@@ -27,5 +27,5 @@ module.exports={
         ]
     },
     //在nw中运行时启用
-    //target: 'node-webkit'
+    target: 'node-webkit'
 }

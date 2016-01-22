@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "1f67ace80fa9101f0299"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "163fe0ad382c026d7dbb"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -33668,8 +33668,9 @@
 	 */
 	var fs = __webpack_require__(21),
 	    config = __webpack_require__(316);
-	var tagconfig = config.base + "/../source/_data/tags.json";
-	var cateconfig = config.base + "/../source/_data/category.json";
+	alert(config.base);
+	var tagconfig = config.base + "../source/_data/tags.json";
+	var cateconfig = config.base + "../source/_data/category.json";
 	var tags = fs.readFileSync(tagconfig, "utf8");
 	var cates = fs.readFileSync(cateconfig, "utf8");
 	tags = JSON.parse(tags);
@@ -33677,14 +33678,6 @@
 	__webpack_require__(317);
 
 	module.exports = _react2.default.createClass({
-	    getInitialState: function getInitialState() {
-	        return {
-	            tags: tags,
-	            cates: cates,
-	            tagValue: "",
-	            cateValue: ""
-	        };
-	    },
 	    tagValueChange: function tagValueChange(event) {
 	        this.setState({ tagValue: event.target.value });
 	    },
@@ -33693,57 +33686,15 @@
 	    },
 	    addTag: function addTag() {
 	        var tag = this.state.tagValue;
-	        var tags = this.state.tags;
 	        if (!tag) {
-	            alert("标签名称不能为空");
+	            alert(tag + "标签不能为空");
 	            return false;
 	        }
-	        if (tags.indexOf(tag) > -1) {
-	            alert("已有标签");
-	        }
-	        this.setState({ tagValue: "" });
 	        tags.push(tag);
 	        fs.writeFileSync(tagconfig, JSON.stringify(tags));
-	        this.setState({ tags: tags });
 	        return false;
-	    },
-	    removeTag: function removeTag(event) {
-	        var tags = this.state.tags;
-	        var tag = event.target.title;
-	        tags.splice(tags.indexOf(tag), 1);
-	        fs.writeFileSync(tagconfig, JSON.stringify(tags));
-	        this.setState({ tags: tags });
-	    },
-	    addCate: function addCate() {
-	        var cates = this.state.cates;
-	        var cate = this.state.cateValue;
-	        if (!cate) {
-	            alert("分类名称不能为空");
-	            return false;
-	        }
-	        if (cates.indexOf(cate) > -1) {
-	            alert("已有分类");
-	        }
-	        this.setState({ cateValue: "" });
-	        cates.push(cate);
-	        fs.writeFileSync(cateconfig, JSON.stringify(cates));
-	        this.setState({ cates: cates });
-	        return false;
-	    },
-	    removeCate: function removeCate(event) {
-	        var cates = this.state.cates;
-	        var cate = event.target.title;
-	        cates.splice(cates.indexOf(cate), 1);
-	        fs.writeFileSync(cateconfig, JSON.stringify(cates));
-	        this.setState({ cates: cates });
 	    },
 	    render: function render() {
-	        var tags = this.state.tags;
-	        var cates = this.state.cates;
-	        var tag = this.state.tagValue;
-	        var cate = this.state.cateValue;
-	        var removeTag = this.removeTag;
-	        var removeCate = this.removeCate;
 	        return _react2.default.createElement(
 	            "form",
 	            { className: "form-horizontal sq-form" },
@@ -33766,7 +33717,7 @@
 	                            " ",
 	                            _react2.default.createElement(
 	                                "span",
-	                                { className: "glyphicon glyphicon-remove", title: tag, onClick: removeTag },
+	                                { className: "glyphicon glyphicon-remove" },
 	                                " "
 	                            )
 	                        );
@@ -33780,7 +33731,7 @@
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "col-sm-10" },
-	                    _react2.default.createElement("input", { type: "text", className: "form-control shortinput", value: tag, onChange: this.tagValueChange }),
+	                    _react2.default.createElement("input", { type: "text", className: "form-control shortinput", onChange: this.tagValueChange }),
 	                    _react2.default.createElement(
 	                        "button",
 	                        { type: "button", className: "btn btn-success", onClick: this.addTag },
@@ -33807,7 +33758,7 @@
 	                            " ",
 	                            _react2.default.createElement(
 	                                "span",
-	                                { className: "glyphicon glyphicon-remove", title: cate, onClick: removeCate },
+	                                { className: "glyphicon glyphicon-remove" },
 	                                " "
 	                            )
 	                        );
@@ -33821,10 +33772,10 @@
 	                _react2.default.createElement(
 	                    "div",
 	                    { className: "col-sm-10" },
-	                    _react2.default.createElement("input", { type: "text", className: "form-control shortinput", value: cate, onChange: this.cateValueChange }),
+	                    _react2.default.createElement("input", { type: "text", className: "form-control shortinput" }),
 	                    _react2.default.createElement(
 	                        "button",
-	                        { type: "button", className: "btn btn-success", onClick: this.addCate },
+	                        { className: "btn btn-success" },
 	                        "添加"
 	                    )
 	                )
