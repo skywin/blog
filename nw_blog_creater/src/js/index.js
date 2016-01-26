@@ -7,6 +7,7 @@ import {Router,Route,Link,IndexRoute,Redirect } from "react-router";
 import createBrowserHistory from 'history/lib/createBrowserHistory';
 import config from "./component/config/config";
 import draft from "./component/draft/draft";
+import write from "./component/write/write";
 require("../css/index.css");
 
 
@@ -31,14 +32,6 @@ var nav = React.createClass({
     }
 });
 
-
-var write=React.createClass({
-    render:function(){
-        return (
-            <div><span>write </span></div>
-        );
-    }
-});
 
 let history=createBrowserHistory();
 render((<Router history={history}>

@@ -10,9 +10,17 @@ var gulp=require("gulp"),
     exec = require('child_process').exec;
 
 //生成config文件
+//tags - 标签列表存储文职
+//cates - 分类列表存储位置
+//posts - 文章列表存储位置
+//drafts
 gulp.task("initConfig",function(){
     var config={
-        base:__dirname
+        base:__dirname,
+        tags:__dirname+"/../source/_data/tags.json",
+        cates:__dirname+"/../source/_data/category.json",
+        posts:__dirname+"/../source/_posts",
+        drafts:__dirname+"/../source/_drafts"
     }
     fs.writeFileSync("config.json",JSON.stringify(config));
 });

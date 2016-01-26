@@ -3,8 +3,8 @@
  */
 var fs=require("fs"),
     config=require("../../loadConfig");
-var tagconfig=  config.base+"/../source/_data/tags.json";
-var cateconfig= config.base+"/../source/_data/category.json";
+var tagconfig=  config.tags;
+var cateconfig= config.cates;
 var tags=fs.readFileSync(tagconfig,"utf8");
 var cates=fs.readFileSync(cateconfig,"utf8");
 tags=JSON.parse(tags);
