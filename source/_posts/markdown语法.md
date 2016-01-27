@@ -162,10 +162,3 @@ Additional 补充：
 
 Markdown也支持传统的HTML标签。
 比如一个链接，你不太喜欢Markdown的写法，也可以直接写成<a href="http://www.baidu.com">百度</a>
-
-
-我来测试
-呵呵呵呵
-[](http://)
-![](http://)
-[www.baidu.com](http://)
