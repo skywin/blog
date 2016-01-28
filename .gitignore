@@ -5,5 +5,4 @@ db.json
 node_modules/
 build/
 .deploy*/
-nwjs-v0.12.3-win-x64/
 .idea/
