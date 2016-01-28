@@ -29,5 +29,6 @@ gulpfile.js中，initConfig任务内需要进行hexo相关的一些配置
 ## 好用的功能
 编辑完点发布，自动调用hexo方法生成静态文件，并部署到gitcafe和github两个仓库
 支持QQ截图直接贴图（编辑器中显示的是本地路径，发布时自动替换为线上路径）
-![](http://zoucz.com/blogimgs/editor.gif)    
+![](http://zoucz.com/blogimgs/editor.gif)
 
+站点地址：http://zoucz.com

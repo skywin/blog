@@ -18,3 +18,5 @@ hexo deploy 将blog发布至远程git仓库，git地址在_config.yml中配置�
 安装完成后运行 gulp 即可启动编写发布工具
 nwjs-v0.12.3-winx64目录下会生成一个editor.exe，直接发送至桌面快捷方式可运行
 
+
+站点地址：http://zoucz.com
