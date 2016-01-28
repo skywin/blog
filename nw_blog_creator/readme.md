@@ -15,17 +15,19 @@ nwjs-v0.12.3-win-x64 目录下也会生成 editor.exe 程序，可创建此程�
 
 ## hexo相关配置
 gulpfile.js中，initConfig任务内需要进行hexo相关的一些配置
-> var config={
->         domain:"zoucz.com",
->         base:__dirname,
->         sbase:__dirname+"/../source",
->         tags:__dirname+"/../source/_data/tags.json",
->         cates:__dirname+"/../source/_data/category.json",
->         posts:__dirname+"/../source/_posts",
->         drafts:__dirname+"/../source/_drafts",
->         imgs:__dirname+"/../source/blogimgs"
->     }
 
+```javascript
+    var config={
+            domain:"zoucz.com",
+            base:__dirname,
+            sbase:__dirname+"/../source",
+            tags:__dirname+"/../source/_data/tags.json",
+            cates:__dirname+"/../source/_data/category.json",
+            posts:__dirname+"/../source/_posts",
+            drafts:__dirname+"/../source/_drafts",
+            imgs:__dirname+"/../source/blogimgs"
+        }
+```
 
 分别是网站域名、hexo根目录，hexo的src路径，标签路径，分类路径，文章路径，草稿路径，图片保存路径
 
