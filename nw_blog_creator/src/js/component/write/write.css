@@ -1,0 +1,7 @@
+#titleform{
+    margin: 10px 0px;
+    padding-left: 10px;
+}
+#tags,#cates{
+    min-width: 175px;
+}
