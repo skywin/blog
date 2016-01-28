@@ -3,7 +3,7 @@
 使用了markdown编辑器：https://github.com/lepture/editor ，为满足功能需求略有修改
 使用 nw.js制作桌面软件：http://docs.nwjs.io/en/v0.13.0-beta4/
 使用react制作UI组件：https://facebook.github.io/react/docs/getting-started.html
-使用gulp+webpack打包项目：https://webpack.github.io/docs/
+使用gulp+webpack打包项目：https://webpack.github.io/docs/             
 ## 使用配置
 安装node、git，全局安装gulp、webpack、hexo
 在本地git客户端和远程git仓库中配置好ssh key(为了自动部署):https://help.github.com/articles/generating-an-ssh-key/
