@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "3b2e3a89a5139d0d5a10"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bf1502424f79f8d1eb15"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -44901,7 +44901,7 @@
 	    componentDidMount: function componentDidMount() {
 	        var editor = new Editor({
 	            element: document.getElementById('editor'),
-	            toolbar: [{ name: 'bold', action: Editor.toggleBold }, { name: 'italic', action: Editor.toggleItalic }, '|', { name: 'quote', action: Editor.toggleBlockquote }, { name: 'unordered-list', action: Editor.toggleUnOrderedList }, { name: 'ordered-list', action: Editor.toggleOrderedList }, '|', { name: 'link', action: Editor.drawLink }, { name: 'image', action: Editor.drawImage }, '|', { name: 'preview', action: Editor.togglePreview }]
+	            toolbar: [{ name: 'bold', action: Editor.toggleBold }, { name: 'italic', action: Editor.toggleItalic }, '|', { name: 'quote', action: Editor.toggleBlockquote }, { name: 'unordered-list', action: Editor.toggleUnOrderedList }, { name: 'ordered-list', action: Editor.toggleOrderedList }, { name: 'code', action: Editor.toggleCode }, '|', { name: 'link', action: Editor.drawLink }, { name: 'image', action: Editor.drawImage }, '|', { name: 'preview', action: Editor.togglePreview }]
 	        });
 	        editor.render();
 	        autoSave = setInterval(this.save, 10000);
@@ -44956,8 +44956,7 @@
 	        var editor = this.state.editor;
 	        (0, _hotkey.paste)(e).then(function (path) {
 	            if (path) {
-
-	                editor.drawImage2(path);
+	                editor.drawImageUri(path);
 	            }
 	        }).done();
 	    },
@@ -55332,6 +55331,40 @@
 	        cm.focus();
 	    }
 
+	    /**
+	     * Action for toggling code.
+	     */
+	    function toggleCode(editor) {
+	        var cm = editor.codemirror;
+	        var stat = getState(cm);
+
+	        var text;
+	        var start = '\r\n``` \r\n';
+	        var end = '\r\n```\r\n';
+
+	        var startPoint = cm.getCursor('start');
+	        var endPoint = cm.getCursor('end');
+	        if (stat.italic) {
+	            text = cm.getLine(startPoint.line);
+	            start = text.slice(0, startPoint.ch);
+	            end = text.slice(startPoint.ch);
+
+	            start = start.replace(/^(.*)?(\*|\_)(\S+.*)?$/, '$1$3');
+	            end = end.replace(/^(.*\S+)?(\*|\_)(\s+.*)?$/, '$1$3');
+	            startPoint.ch -= 1;
+	            endPoint.ch -= 1;
+	            cm.setLine(startPoint.line, start + end);
+	        } else {
+	            text = cm.getSelection();
+	            cm.replaceSelection(start + text + end);
+
+	            startPoint.ch += 8;
+	            endPoint.ch += 7;
+	        }
+	        cm.setSelection(startPoint, endPoint);
+	        cm.focus();
+	    }
+
 
 	    /**
 	     * Action for toggling blockquote.
@@ -55379,7 +55412,7 @@
 	        _replaceSelection(cm, stat.image, '![', '](http://)');
 	    }
 
-	    function drawImage2(editor,uri) {
+	    function drawImageUri(editor,uri) {
 	        var cm = editor.codemirror;
 	        var stat = getState(cm);
 	        _replaceSelection(cm, stat.image, '![', ']('+uri+')');
@@ -55509,6 +55542,7 @@
 	        {name: 'quote', action: toggleBlockquote},
 	        {name: 'unordered-list', action: toggleUnOrderedList},
 	        {name: 'ordered-list', action: toggleOrderedList},
+	        {name: 'code', action: toggleCode},
 	        '|',
 
 	        {name: 'link', action: drawLink},
@@ -55731,12 +55765,13 @@
 	     */
 	    Editor.toggleBold = toggleBold;
 	    Editor.toggleItalic = toggleItalic;
+	    Editor.toggleCode = toggleCode;
 	    Editor.toggleBlockquote = toggleBlockquote;
 	    Editor.toggleUnOrderedList = toggleUnOrderedList;
 	    Editor.toggleOrderedList = toggleOrderedList;
 	    Editor.drawLink = drawLink;
 	    Editor.drawImage = drawImage;
-	    Editor.drawImage2 = drawImage2;
+	    Editor.drawImageUri = drawImageUri;
 	    Editor.undo = undo;
 	    Editor.redo = redo;
 	    Editor.togglePreview = togglePreview;
@@ -55750,6 +55785,9 @@
 	    };
 	    Editor.prototype.toggleItalic = function() {
 	        toggleItalic(this);
+	    };
+	    Editor.prototype.toggleCode = function() {
+	        toggleCode(this);
 	    };
 	    Editor.prototype.toggleBlockquote = function() {
 	        toggleBlockquote(this);
@@ -55766,8 +55804,8 @@
 	    Editor.prototype.drawImage = function() {
 	        drawImage(this);
 	    };
-	    Editor.prototype.drawImage2 = function(uri) {
-	        drawImage2(this,uri);
+	    Editor.prototype.drawImageUri = function(uri) {
+	        drawImageUri(this,uri);
 	    };
 	    Editor.prototype.undo = function() {
 	        undo(this);

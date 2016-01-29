@@ -63,6 +63,7 @@ module.exports=React.createClass({
             {name: 'quote', action: Editor.toggleBlockquote},
             {name: 'unordered-list', action: Editor.toggleUnOrderedList},
             {name: 'ordered-list', action: Editor.toggleOrderedList},
+            {name: 'code', action: Editor.toggleCode},
             '|',
             {name: 'link', action: Editor.drawLink},
             {name: 'image', action: Editor.drawImage},
@@ -122,8 +123,7 @@ module.exports=React.createClass({
         var editor = this.state.editor;
         paste(e).then(function(path){
             if(path){
-
-                editor.drawImage2(path);
+                editor.drawImageUri(path);
             }
         }).done();
     },
