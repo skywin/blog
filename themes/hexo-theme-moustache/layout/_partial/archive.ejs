@@ -68,6 +68,7 @@ tags = Object.keys(_tags);
   <% } %>
   <div class="cate-detail">
     <% var ret = {}, tag = page.tag, cate = page.category;
+    site.posts=site.posts.sort('date', -1);
     site.posts.each(function(post){
       var year = post.date.year();
       if(!ret[year]) {

@@ -44,7 +44,11 @@
 		</div>
 		<!--<div class="rightbar-frame"></div>-->
 	</div>
-		<% var recentPost = site.posts.data[1];
+		<%
+		//var recentPost = site.posts.data[1];
+		//对文章按日期排序
+		site.posts=site.posts.sort('date', -1);
+		var recentPost = site.posts.data[0];
 		var rTitle = recentPost.title;
 		var excerpt = recentPost.excerpt.replace(/<[^>]+?>|\n/gm, '') || recentPost.content.replace(/<[^>]+?>|\n/gm, '').slice(0, 100) + "...";
 		%>
