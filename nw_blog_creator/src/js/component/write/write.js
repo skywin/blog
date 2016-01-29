@@ -111,13 +111,18 @@ module.exports=React.createClass({
     },
     //发布文章
     pub:function(e){
-        var editor = this.state.editor;
+        var editor = this.state.editor,
+            catemg=this.state.catemg,
+            tagmg=this.state.tagmg;
         var title=$("#title").val();
         var filename=$("#filename").val();
-        var cates=$("#cates").val();
-        var tags=$("#tags").val();
+        var cates=catemg.getValue().join(",");
+        var tags=tagmg.getValue().join(",");
         var content=editor.codemirror.getValue();
         publish(title,filename,cates,tags,content);
+        if(autoSave){
+            clearInterval(autoSave);
+        }
     },
     pasteImg:function(e){
         var editor = this.state.editor;

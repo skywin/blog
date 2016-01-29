@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "bf1502424f79f8d1eb15"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "532de8ba72af4f0554f4"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -44944,13 +44944,18 @@
 	    },
 	    //发布文章
 	    pub: function pub(e) {
-	        var editor = this.state.editor;
+	        var editor = this.state.editor,
+	            catemg = this.state.catemg,
+	            tagmg = this.state.tagmg;
 	        var title = (0, _jquery2.default)("#title").val();
 	        var filename = (0, _jquery2.default)("#filename").val();
-	        var cates = (0, _jquery2.default)("#cates").val();
-	        var tags = (0, _jquery2.default)("#tags").val();
+	        var cates = catemg.getValue().join(",");
+	        var tags = tagmg.getValue().join(",");
 	        var content = editor.codemirror.getValue();
 	        (0, _fileOperate.publish)(title, filename, cates, tags, content);
+	        if (autoSave) {
+	            clearInterval(autoSave);
+	        }
 	    },
 	    pasteImg: function pasteImg(e) {
 	        var editor = this.state.editor;
