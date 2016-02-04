@@ -3,7 +3,7 @@ categories:
   - 杂谈
 tags:
   - 编程杂谈
-date: 2016-02-02 16:16:31
+date: 2016-02-02 16:50:49
 ---
 学习编程以来，每次理解比较重要的语言功能时，总爱用一些比较容易理解的东西来做比喻，方便理解。  
 比如对nodejs中stream和buffer的理解： [http://www.cnblogs.com/tzyy/p/5108724.html](http://www.cnblogs.com/tzyy/p/5108724.html)   

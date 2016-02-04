@@ -13,7 +13,7 @@ pages:
   about: /about/
   friends: /friends/
   demos: /demos/
-  feed: /rss2.xml
+  feed: /atom.xml
   comments: /comments/
   message: /message/
 
