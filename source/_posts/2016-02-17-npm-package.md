@@ -15,6 +15,7 @@ name必须小于等于214个字节，包括前缀名称在内（如 xxx/xxxmodul
 * name不能以"_"或"."开头    
 * 不能含有大写字母    
 * name会成为url的一部分，不能含有url非法字符   
+
 下面是官网文档的一些建议：   
 * 不要使用和node核心模块一样的名称     
 *  name中不要含有"js"和"node"。 It's assumed that it's js, since you're writing a package.json file, and you can specify the engine using the "engines" field. (See below.) 
