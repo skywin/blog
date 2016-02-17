@@ -9,8 +9,14 @@ date: 2016-02-17 09:28:04
 # 概述  
 本文档的内容是package.json配置里边的属性含义。package.json必须是一个严格的json文件，而不仅仅是js里边的一个对象。其中很多属性可以通过npm-config来生成。   
 # name   
-package.json中最重要的属性是name和version两个属性，这两个属性是必须要有的，否则模块就无法被安装，这两个属性一起形成了一个npm模块的唯一标识符。模块中内容变更的同时，模块版本也应该一起变化。   
-name属性就是你的模块名称，下面是一些要注意的地方:   
+package.json中最重要的属性是name和version两个属性，这两个属性是必须要有的，否则模块就无法被安装，这两个属性一起形成了一个npm模块的唯一标识符。模块中内容变更的同时，模块版本也应该一起变化。 
+name属性就是你的模块名称，下面是一些命名规则:    
+name必须小于等于214个字节，包括前缀名称在内（如 xxx/xxxmodule）。    
+* name不能以"_"或"."开头    
+* 不能含有大写字母    
+* name会成为url的一部分，不能含有url非法字符   
+下面是官网文档的一些建议：   
+* 不要使用和node核心模块一样的名称     
 *  name中不要含有"js"和"node"。 It's assumed that it's js, since you're writing a package.json file, and you can specify the engine using the "engines" field. (See below.) 
 *  name属性会成为模块url、命令行中的一个参数或者一个文件夹名称，任何非url安全的字符在name中都不能使用，也不能以"_"或"."开头 
 *  name属性也许会被写在require()的参数中，所以最好取个简短而语义化的值。
