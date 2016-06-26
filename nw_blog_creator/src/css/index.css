@@ -71,3 +71,6 @@ html,body,#nav_wrapper ul{
 #win_ctrl span:hover{
     color: white;
 }
+#ineditor{
+    display: none;
+}

@@ -9,6 +9,9 @@ import createBrowserHistory from 'history/lib/createBrowserHistory';
 import config from "./component/config/config";
 import draft from "./component/draft/draft";
 import write from "./component/write/write";
+//var config=require("./component/config/config");
+//var draft=require("./component/draft/draft");
+//var write=require("./component/write/write");
 require("../css/index.css");
 
 
@@ -55,4 +58,4 @@ render((<Router history={history}>
             <Route path="*" component={write}/>
         </Route>
     </Router>)
-    ,document.body);
+    ,document.body/*getElementById("wrapper")*/);

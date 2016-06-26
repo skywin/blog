@@ -1,10 +1,7 @@
 title: 理解npm-shrinkwrap
 categories:
-  - nodejs
 tags:
-  - nodejs
-  - npm
-date: 2016-02-19 18:25:04
+date: 2016-06-27 01:16:25
 ---
 本文转自美团技术博客，原文：[http://tech.meituan.com/npm-shrinkwrap.html?utm_source=tuicool&utm_medium=referral](http://tech.meituan.com/npm-shrinkwrap.html?utm_source=tuicool&utm_medium=referral)  
 

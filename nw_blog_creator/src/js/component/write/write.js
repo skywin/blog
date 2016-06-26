@@ -9,9 +9,7 @@ import {paste} from "./hotkey";
 require("imports?jQuery=jquery!../../../../lib/magicsuggest/magicsuggest-min");
 require("../../../../lib/magicsuggest/magicsuggest-min.css");
 
-var editor=require("imports?this=>window!exports?window.editormd!../../../../lib/editor/editormd.min.js");
-require("../../../../lib/editor/css/editormd.css");
-
+var editormd=window.editormd;
 require("./write.css");
 
 var autoSave;
@@ -38,9 +36,11 @@ module.exports=React.createClass({
             editor=this.state.editor,
             tagmg=this.state.tagmg,
             catemg=this.state.catemg;
-
+        window.zcz=editor;
         if(content.content){
-            editor.setMarkdown(content.content);
+            editor.on("load",function(){
+                editor.setMarkdown(content.content);
+            })
         }
         if(content.tags){
             tagmg.setValue(content.tags);
@@ -53,21 +53,24 @@ module.exports=React.createClass({
     // 1.初始化编辑器
     // 2.每10s保存一次草稿
     componentDidMount:function(){
+        if(!window.EDITOR_BASE_PATH){
+            window.EDITOR_BASE_PATH=location.href.replace("index.html","");
+        }
+        var height=document.documentElement.clientHeight-150;
         var editor = editormd("editor", {
-            width   : "90%",
-            height  : 640,
+            width   : "100%",
+            height  : height,
             syncScrolling : "single",
-            path    : "../lib/editor/lib"
+            path    : window.EDITOR_BASE_PATH+"lib/editor/lib/"
         });
         autoSave=setInterval(this.save,10000);
         //调整编辑器尺寸
         window.onresize=function(){
-            var height=document.documentElement.clientHeight-200,
+            var height=document.documentElement.clientHeight-150,
                 width=document.documentElement.clientWidth;
-            //TODO
-            //editor.setSize(width,height);
+            editor.width(width);
+            editor.height(height);
         }
-        window.onresize();
         //绑定多选框
         var catemg=$('#cates').magicSuggest({
             placeholder: '选择分类',
@@ -80,11 +83,7 @@ module.exports=React.createClass({
         this.setState({editor:editor,catemg:catemg,tagmg:tagmg});
         //若页面路径是编辑草稿，填充之
         setTimeout(this.fillEditor,0);
-        /*$(".CodeMirror").keydown(function(e){
-            if(e.ctrlKey && e.keyCode==86){
-                paste(e)
-            }
-        });*/
+        window.onresize();
     },
     //保存文章
     save:function(){
@@ -148,7 +147,9 @@ module.exports=React.createClass({
                     &nbsp;
                     <button className="btn btn-success btn-xs" onClick={this.pub}>发布</button>
                 </div>
-                <textarea id="editor" onPaste={paste}></textarea>
+                <div id="editor"><textarea id="ineditor"></textarea></div>
+
+
             </div>
         );
     }

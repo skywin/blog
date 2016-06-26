@@ -11,7 +11,7 @@ module.exports={
         ],
     output:{
         //配合gulp使用的时候注释掉path配置，生成目录在gulp中配置
-        path:"./dist/js",
+        //path:"./dist/js",
         publicPath: '/dist/js/',
         filename:"main.js"
 
