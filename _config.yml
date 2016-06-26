@@ -73,7 +73,7 @@ theme: hexo-theme-moustache
   #https://github.com/zouchengzhuo/blog.git
 deploy:
 - type: git
-  repo: git@gitcafe.com:tzyy/blog.git
+  repo: git@git.coding.net:zoucz/blog.git
   branch: gh-pages
   message: build at local, send to gitcafe {{ now("YYYY-MM-DD HH:mm:ss") }}
 - type: git
