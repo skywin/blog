@@ -9,10 +9,8 @@ import {paste} from "./hotkey";
 require("imports?jQuery=jquery!../../../../lib/magicsuggest/magicsuggest-min");
 require("../../../../lib/magicsuggest/magicsuggest-min.css");
 
-import marked from "../../../../lib/editor/dist/marked.js";
-window.marked=marked;
-var Editor=require("imports?this=>window!exports?window.Editor!../../../../lib/editor/dist/editor.js");
-require("../../../../lib/editor/dist/editor.css");
+var editor=require("imports?this=>window!exports?window.editormd!../../../../lib/editor/editormd.min.js");
+require("../../../../lib/editor/css/editormd.css");
 
 require("./write.css");
 
@@ -42,7 +40,7 @@ module.exports=React.createClass({
             catemg=this.state.catemg;
 
         if(content.content){
-            editor.codemirror.setValue(content.content);
+            editor.setMarkdown(content.content);
         }
         if(content.tags){
             tagmg.setValue(content.tags);
@@ -55,28 +53,19 @@ module.exports=React.createClass({
     // 1.初始化编辑器
     // 2.每10s保存一次草稿
     componentDidMount:function(){
-        var editor = new Editor({
-         element: document.getElementById('editor'),
-         toolbar: [ {name: 'bold', action: Editor.toggleBold},
-            {name: 'italic', action: Editor.toggleItalic},
-            '|',
-            {name: 'quote', action: Editor.toggleBlockquote},
-            {name: 'unordered-list', action: Editor.toggleUnOrderedList},
-            {name: 'ordered-list', action: Editor.toggleOrderedList},
-            {name: 'code', action: Editor.toggleCode},
-            '|',
-            {name: 'link', action: Editor.drawLink},
-            {name: 'image', action: Editor.drawImage},
-            '|',
-            {name: 'preview', action: Editor.togglePreview}]
-         });
-         editor.render();
-         autoSave=setInterval(this.save,10000);
+        var editor = editormd("editor", {
+            width   : "90%",
+            height  : 640,
+            syncScrolling : "single",
+            path    : "../lib/editor/lib"
+        });
+        autoSave=setInterval(this.save,10000);
         //调整编辑器尺寸
         window.onresize=function(){
             var height=document.documentElement.clientHeight-200,
                 width=document.documentElement.clientWidth;
-            editor.codemirror.setSize(width,height);
+            //TODO
+            //editor.setSize(width,height);
         }
         window.onresize();
         //绑定多选框
@@ -106,7 +95,8 @@ module.exports=React.createClass({
         var filename=$("#filename").val();
         var cates=catemg.getValue().join(",");
         var tags=tagmg.getValue().join(",");
-        var content=editor.codemirror.getValue();
+        //TODO
+        var content=editor.getMarkdown();
         saveToDraft(title,filename,cates,tags,content);
     },
     //发布文章
@@ -118,7 +108,7 @@ module.exports=React.createClass({
         var filename=$("#filename").val();
         var cates=catemg.getValue().join(",");
         var tags=tagmg.getValue().join(",");
-        var content=editor.codemirror.getValue();
+        var content=editor.getMarkdown();
         publish(title,filename,cates,tags,content);
         if(autoSave){
             clearInterval(autoSave);
@@ -128,7 +118,7 @@ module.exports=React.createClass({
         var editor = this.state.editor;
         paste(e).then(function(path){
             if(path){
-                editor.drawImageUri(path);
+                editor.insertValue("![]("+path+")");
             }
         }).done();
     },
