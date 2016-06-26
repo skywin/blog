@@ -1,2 +1,1 @@
-git pull github master
-pause
+git pull github master & pause
