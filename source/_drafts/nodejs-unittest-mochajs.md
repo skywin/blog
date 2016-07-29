@@ -4,7 +4,7 @@ categories:
 tags:
   - nodejs
   - 单元测试
-date: 2016-07-27 18:59:08
+date: 2016-07-28 19:44:55
 ---
 # 关于单元测试的想法
 对于一些比较重要的项目，每次更新代码之后总是要自己测好久，担心一旦上线出了问题影响的服务太多，此时就希望能有一个比较规范的测试流程。在github上看到牛逼的javascript开源项目，也都是有测试代码的，看来业界大牛们都比较注重单元测试这块。
@@ -557,19 +557,293 @@ names是一个以逗号分隔的列表，如果你的模块需要暴露出一些
 `npm install mocha-lcov-reporter`,` --reporter mocha-lcov-reporter`
 ### -T, --TIMEOUT <MS>
 用来指定用例超时时间
+### -S, --SLOW <MS>
+用来指定慢用例判定时间，默认是75ms
+### -G, --GREP <PATTERN>
+grep pattern可以用来筛选要执行的用例或用例集，pattern参数在mocha内部会被编译成一个正则表达式。    
+假如有下面的测试用例：
+```javascript
+describe('api', function() {
+  describe('GET /api/users', function() {
+    it('respond with an array of users', function() {
+      // ...
+    });
+  });
+});
 
+describe('app', function() {
+  describe('GET /users', function() {
+    it('respond with an array of users', function() {
+      // ...
+    });
+  });
+});
+```
+可以用`--grep api`、`--grep app`、`--grep users`、`--grep GET`，来筛选出要执行的用例。
 
+# 测试接口类型
+mocha的测试接口类型指的是集中测试用例组织模式的选择，包括BDD行为驱动开发（Behavior Driven Development），TDD测试驱动开发（Test-Driven Development），Exports，QUnit 和 Require-style 几种。
+## BDD
+BDD测试接口提供 describe(), context(), it(), specify(), before(), after(), beforeEach(), 和 afterEach()几种函数，其中context函数只是describe函数的别名，specify函数也是if函数的别名。
+mocha默认的测试接口，前边的所有例子都是基于BDD来编写的。    
+```javascript
+ describe('Array', function() {
+    before(function() {
+      // ...
+    });
 
+    describe('#indexOf()', function() {
+      context('when not present', function() {
+        it('should not throw an error', function() {
+          (function() {
+            [1,2,3].indexOf(4);
+          }).should.not.throw();
+        });
+        it('should return -1', function() {
+          [1,2,3].indexOf(4).should.equal(-1);
+        });
+      });
+      context('when present', function() {
+        it('should return the index where the element first appears in the array', function() {
+          [1,2,3].indexOf(3).should.equal(2);
+        });
+      });
+    });
+  });
+```
+## TDD
+TDD接口提供 suite(), test(), suiteSetup(), suiteTeardown(), setup(), 和 teardown()函数，用例写法如下：
+```javascript
+suite('Array', function() {
+  setup(function() {
+    // ...
+  });
 
+  suite('#indexOf()', function() {
+    test('should return -1 when not present', function() {
+      assert.equal(-1, [1,2,3].indexOf(4));
+    });
+  });
+});
+```
+## EXPORTS
+Exports 的写法有的类似于Mocha的前身expresso，其写法如下：
+```javascript
+module.exports = {
+  before: function() {
+    // ...
+  },
 
+  'Array': {
+    '#indexOf()': {
+      'should return -1 when not present': function() {
+        [1,2,3].indexOf(4).should.equal(-1);
+      }
+    }
+  }
+};
+```
+通过exports导出的对象里边，除了几个钩子函数之外，其他的Object类型属性都是用例集，function类型的属性都是用例。
+## QUNIT
+像TDD接口一样支持suite和test函数，同时又像BDD一样支持before(), after(), beforeEach(), 和 afterEach()，等钩子函数。
+```javascript
+function ok(expr, msg) {
+  if (!expr) throw new Error(msg);
+}
 
+suite('Array');
 
+test('#length', function() {
+  var arr = [1,2,3];
+  ok(arr.length == 3);
+});
 
+test('#indexOf()', function() {
+  var arr = [1,2,3];
+  ok(arr.indexOf(1) == 0);
+  ok(arr.indexOf(2) == 1);
+  ok(arr.indexOf(3) == 2);
+});
 
+suite('String');
 
+test('#length', function() {
+  ok('foo'.length == 3);
+});
+```
+## REQUIRE
+require测试接口允许你通过require来导入describe函数，取个任意的别名。如果你不希望测试中出现全局的变量，这个接口也是十分有用的。
+值得注意的是，这里的require不能直接通过node命令来执行，node的模块管理是不能解析这里的require的，需要通过mocha命令来运行。
+```javascript
+ar testCase = require('mocha').describe;
+var pre = require('mocha').before;
+var assertions = require('mocha').it;
+var assert = require('chai').assert;
 
+testCase('Array', function() {
+  pre(function() {
+    // ...
+  });
 
+  testCase('#indexOf()', function() {
+    assertions('should return -1 when not present', function() {
+      assert.equal([1,2,3].indexOf(4), -1);
+    });
+  });
+});
+```
+# 测试报告视图
+如果不自己加上自定义的报告输出，mocha会在控制台中输出报告。
+## SPEC视图
+这个是默认的报告样式，输出一个嵌套的分级视图
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688423629.png)
 
+## DOT MATRIX视图
+用一系列点点来表示用例，测试的是红点，未实现的是蓝点，比较慢的是黄点，通过的是白点，如果你想让报告看起来简洁一些，可以用这个视图。
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688537169.png)
+
+## NYAN视图
+尼玛这是个毛线视图啊，官方文档都懒得给出说明
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688604402.png)
+
+## TAP视图
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688672698.png)
+
+## LANDING STRIP视图
+ ‘Landing Strip’的意思是飞机降落跑道，这是一个逗逼测试人员弄出来的，像一架飞机降落一样的视图。
+ ![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688878574.png)
+ 这个是坠机了的视图......
+ ![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688898981.png)
+
+## LIST视图
+一个简单的列表视图
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688935839.png)
+
+## PROGRESS视图
+包含一个简单的进度条的视图
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688957850.png)
+
+## JSON视图
+输出一个JSON作为测试结果
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469689152790.png)
+
+##JSON STREAM视图
+输出的也是一个JSON，只不过输出的时候会带上换行
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469689235837.png)
+
+## JSONCOV覆盖率报告
+一个依赖 node-jscoverage 模块生成的视图，用来生成覆盖率报告
+
+## HTMLCOV覆盖率报告
+用来生成一个覆盖率的html报告
+[https://github.com/expressjs/express/commit/b6ee5fafd0d6c79cf7df5560cb324ebee4fe3a7f](https://github.com/expressjs/express/commit/b6ee5fafd0d6c79cf7df5560cb324ebee4fe3a7f "https://github.com/expressjs/express/commit/b6ee5fafd0d6c79cf7df5560cb324ebee4fe3a7f")
+
+## MIN视图
+只显示总体测试情况
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469698473893.png)
+
+## DOC视图
+生成一个只包含html的body部分的报告，结构如下：
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469698544399.png)
+例如，测试代码如下：
+```javascript
+describe('Array', function() {
+  describe('#indexOf()', function() {
+    it('should return -1 when the value is not present', function() {
+      [1,2,3].indexOf(5).should.equal(-1);
+      [1,2,3].indexOf(0).should.equal(-1);
+    });
+  });
+});
+```
+运行命令` mocha --reporter doc array`,结果：
+```html
+<section class="suite">
+  <h1>Array</h1>
+  <dl>
+    <section class="suite">
+      <h1>#indexOf()</h1>
+      <dl>
+      <dt>should return -1 when the value is not present</dt>
+      <dd><pre><code>[1,2,3].indexOf(5).should.equal(-1);
+[1,2,3].indexOf(0).should.equal(-1);</code></pre></dd>
+      </dl>
+    </section>
+  </dl>
+</section>
+```
+自己添加head、html等标签，再加上style，可以生成自定义样式的报告。
+
+## MARKDOWN视图
+生成一个markdown版本的报告，例子：[https://github.com/senchalabs/connect/blob/90a725343c2945aaee637e799b1cd11e065b2bff/tests.md](https://github.com/senchalabs/connect/blob/90a725343c2945aaee637e799b1cd11e065b2bff/tests.md "https://github.com/senchalabs/connect/blob/90a725343c2945aaee637e799b1cd11e065b2bff/tests.md")
+
+## HTML视图
+目前只有在浏览器中运行的mocha才能直接生成html报告，nodejs中可以通过doc视图或者markdown视图得到的内容自己用脚本生成html版本的~
+![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469698980933.png)
+
+# 第三方测试生成器
+mocha允许我们自己定义第三方的报告生成器，可以参考[文档](https://github.com/mochajs/mocha/wiki/Third-party-reporters "文档")。
+一个例子：[TeamCity reporter](https://github.com/travisjeffery/mocha-teamcity-reporter "TeamCity reporter")
+
+# 在浏览器中运行mocha
+mocha项目下都会有mocha.js和mocha.css供浏览器中的测试使用
+## 只能在浏览器中使用的函数
+`mocha.allowUncaught()` ，未捕获的错误不会被抛出   
+下面是一个例子，在加载测试脚本之前，用`mocha.setup('bdd')`函数把测试模式设置为BDD接口，测试脚本加载完之后用`mocha.run()`函数来运行测试
+```html
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+</head>
+<body>
+  <div id="mocha"></div>
+
+  <script src="https://cdn.rawgit.com/jquery/jquery/2.1.4/dist/jquery.min.js"></script>
+  <script src="https://cdn.rawgit.com/Automattic/expect.js/0.3.1/index.js"></script>
+  <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+
+  <script>mocha.setup('bdd')</script>
+  <script src="test.array.js"></script>
+  <script src="test.object.js"></script>
+  <script src="test.xhr.js"></script>
+  <script>
+    mocha.checkLeaks();
+    mocha.globals(['jQuery']);
+    mocha.run();
+  </script>
+</body>
+</html>
+```
+
+## GREP
+浏览器中可以通过在url后边加`?grep=api`参数，来使用grep命令
+
+## 浏览器中的mocha配置
+可以通过`mocha.setup()`命令来设置配置
+```javascript
+// Use "tdd" interface.  This is a shortcut to setting the interface;
+// any other options must be passed via an object.
+mocha.setup('tdd');
+
+// This is equivalent to the above.
+mocha.setup({
+  ui: 'tdd'
+});
+
+// Use "tdd" interface, ignore leaks, and force all tests to be asynchronous
+mocha.setup({
+  ui: 'tdd',
+  ignoreLeaks: true,
+  asyncOnly: true
+});
+```
+
+## 浏览器中特有的选项
+### noHighlighting
+如果被设置为true，mocha不会尝试用高亮语法输出测试代码
+### MOCHA.OPTS
 
 
 
