@@ -4,7 +4,7 @@ categories:
 tags:
   - nodejs
   - 单元测试
-date: 2016-08-02 15:57:12
+date: 2016-08-02 15:45:29
 ---
 # 关于单元测试的想法
 对于一些比较重要的项目，每次更新代码之后总是要自己测好久，担心一旦上线出了问题影响的服务太多，此时就希望能有一个比较规范的测试流程。在github上看到牛逼的javascript开源项目，也都是有测试代码的，看来业界大牛们都比较注重单元测试这块。
@@ -380,7 +380,7 @@ describe('add()', function() {
 
 # 测试时间
 许多测试报告会展示测试时间，同样也会标记出那些用例耗时比较长：    
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-27/1469587478096.png)
+![](http://zoucz.com/blogimgs/2016-07-27/1469587478096.png)
 
 可能对于某些测试用例，耗时就是会比较长，那么耗费多长时间才应该本认为执行耗时过长呢？ 可以通过`slow()`函数来标记一下：
 ```javascript
@@ -428,15 +428,15 @@ describe('a suite of tests', function() {
 
 # diff差异比较功能
 若断言库抛出了AssertionErrors，且错误对象中有err.expected属性和err.actual属性，mocha会尝试在报告中展示期望的值和得到的值的差异：
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-27/1469588275973.png)
+![](http://zoucz.com/blogimgs/2016-07-27/1469588275973.png)
 
 # mocha使用命令和参数
 ## mocha init 初始化浏览器中测试
 `mocha init`命令用来生成一个浏览器中单元测试的架子。    
 新建一个目录test    
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-27/1469588933550.png)    
+![](http://zoucz.com/blogimgs/2016-07-27/1469588933550.png)    
 在同级目录运行命令 `mocha init test` ，可以看到test目录下生成了一些样式表文件和js脚本，以及一个用来运行用例、展示报告的index.html    
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-27/1469589018406.png)
+![](http://zoucz.com/blogimgs/2016-07-27/1469589018406.png)
 接着使用文章开头的chai断言库，此时需要用script标签引入了，于是在index.html中加上
 ```html
 <script src="http://chaijs.com/chai.js"></script>
@@ -476,7 +476,7 @@ describe('Array', function() {
 });
 ```
 在浏览器中打开index.html，可以看到用例执行报告：    
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-27/1469589261302.png)    
+![](http://zoucz.com/blogimgs/2016-07-27/1469589261302.png)    
 
 ## mocha命令参数
 mocha命令的基本格式是：` mocha [debug] [options] [files]` 
@@ -698,40 +698,40 @@ testCase('Array', function() {
 如果不自己加上自定义的报告输出，mocha会在控制台中输出报告。
 ## SPEC视图
 这个是默认的报告样式，输出一个嵌套的分级视图
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688423629.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469688423629.png)
 
 ## DOT MATRIX视图
 用一系列点点来表示用例，测试的是红点，未实现的是蓝点，比较慢的是黄点，通过的是白点，如果你想让报告看起来简洁一些，可以用这个视图。
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688537169.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469688537169.png)
 
 ## NYAN视图
 尼玛这是个毛线视图啊，官方文档都懒得给出说明
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688604402.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469688604402.png)
 
 ## TAP视图
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688672698.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469688672698.png)
 
 ## LANDING STRIP视图
  ‘Landing Strip’的意思是飞机降落跑道，这是一个逗逼测试人员弄出来的，像一架飞机降落一样的视图。
- ![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688878574.png)
+ ![](http://zoucz.com/blogimgs/2016-07-28/1469688878574.png)
  这个是坠机了的视图......
- ![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688898981.png)
+ ![](http://zoucz.com/blogimgs/2016-07-28/1469688898981.png)
 
 ## LIST视图
 一个简单的列表视图
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688935839.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469688935839.png)
 
 ## PROGRESS视图
 包含一个简单的进度条的视图
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469688957850.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469688957850.png)
 
 ## JSON视图
 输出一个JSON作为测试结果
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469689152790.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469689152790.png)
 
 ##JSON STREAM视图
 输出的也是一个JSON，只不过输出的时候会带上换行
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469689235837.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469689235837.png)
 
 ## JSONCOV覆盖率报告
 一个依赖 node-jscoverage 模块生成的视图，用来生成覆盖率报告
@@ -742,11 +742,11 @@ testCase('Array', function() {
 
 ## MIN视图
 只显示总体测试情况
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469698473893.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469698473893.png)
 
 ## DOC视图
 生成一个只包含html的body部分的报告，结构如下：
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469698544399.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469698544399.png)
 例如，测试代码如下：
 ```javascript
 describe('Array', function() {
@@ -781,7 +781,7 @@ describe('Array', function() {
 
 ## HTML视图
 目前只有在浏览器中运行的mocha才能直接生成html报告，nodejs中可以通过doc视图或者markdown视图得到的内容自己用脚本生成html版本的~
-![](D:\learn\blog_gitcafe_hexo\nw_blog_creator/../source/blogimgs/2016-07-28/1469698980933.png)
+![](http://zoucz.com/blogimgs/2016-07-28/1469698980933.png)
 
 # 第三方报告生成器
 mocha允许我们自己定义第三方的报告生成器，可以参考[文档](https://github.com/mochajs/mocha/wiki/Third-party-reporters "文档")。
