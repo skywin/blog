@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>ISO日期格式标准 | 邹成卓的个人网站</title>
+  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=0">
+  <meta name="email" content="405966530@qq.com">
+  <meta name="description" content="时区简单理解https://zh.wikipedia.org/wiki/%E6%97%B6%E5%8C%BA上面的链接是时区的wiki说明，下面说说我记住的部分：GMT时区是格林威治标准时间，我把它理解为 “真实时间”UTC时区是根据GMT得来的“世界标准时间”，它的时间和GMT是相同的CST可以指">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ISO日期格式标准 | 邹成卓的个人网站">
+  <meta property="og:url" content="http://www.zoucz.com/blog/2016/01/29/date-iso/">
+  <meta property="og:site_name" content="ISO日期格式标准">
+  <meta property="og:description" content="时区简单理解https://zh.wikipedia.org/wiki/%E6%97%B6%E5%8C%BA上面的链接是时区的wiki说明，下面说说我记住的部分：GMT时区是格林威治标准时间，我把它理解为 “真实时间”UTC时区是根据GMT得来的“世界标准时间”，它的时间和GMT是相同的CST可以指">
+  <link rel="shoticon" href="http://www.zoucz.com/favicon.ico" type="image/x-icon">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <link href="http://www.zoucz.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="alternate" type="application/rss+xml" href="http://www.zoucz.com/atom.xml" title="邹成卓的个人网站" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20151229" type="text/css">
+  <script src="/public/js/jquery.js" type="text/javascript"></script>
+  <script src="/public/js/main.js?v=20151229" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="rainbow"></div>
+    <div class="container">
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">ISO日期格式标准</h1>
+        <a href="/entry/"><img src="/blogimgs/avatar150.png" alt="邹成卓" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/" itemprop="author">邹成卓</a></span>
+        <span><time itemprop="timeCreated">2016-01-29 14:20:33</time></span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/前端开发/">前端开发</a>
+
+</span>
+        <span>标签: 
+<a class="article-tag-link" href="/blog/tags/前端开发/">前端开发</a>, <a class="article-tag-link" href="/blog/tags/时区/">时区</a>
+</span>
+        <span>评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="date-iso"
+                      data-disqus-identifier="date-iso"></a></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处">
+          <p>原文地址：<a href="http://www.zoucz.com/blog/2016/01/29/date-iso/">http://www.zoucz.com/blog/2016/01/29/date-iso/</a>，<a href="http://www.zoucz.com/blog/2016/01/29/date-iso/#footer-nav-on">参与评论</a></p>
+          <img src="http://www.zoucz.com/blogimgs/avatar150.png">
+        </div>
+        <h1 id="时区简单理解"><a href="#时区简单理解" class="headerlink" title="时区简单理解"></a>时区简单理解</h1><p><a href="https://zh.wikipedia.org/wiki/%E6%97%B6%E5%8C%BA" target="_blank" rel="external">https://zh.wikipedia.org/wiki/%E6%97%B6%E5%8C%BA</a></p>
+<p>上面的链接是时区的wiki说明，下面说说我记住的部分：</p>
+<p>GMT时区是格林威治标准时间，我把它理解为 “真实时间”</p>
+<p>UTC时区是根据GMT得来的“世界标准时间”，它的时间和GMT是相同的</p>
+<p>CST可以指下列的时区：</p>
+<p>澳洲中部时间，Central Standard Time (Australia)<br>中部标准时区（北美洲），Central Standard Time (North America)<br>北京时间，China Standard Time<br>古巴标准时间，Cuba Standard Time，参见北美东部时区</p>
+<p>其中我们所在的时区背景时间  CST=UTC+8小时，也就是说，真实时间是0点的时候，背景时间是8点</p>
+<h1 id="ISO-8601日期格式标准"><a href="#ISO-8601日期格式标准" class="headerlink" title="ISO_8601日期格式标准"></a>ISO_8601日期格式标准</h1><p><a href="https://zh.wikipedia.org/wiki/ISO_8601" target="_blank" rel="external">https://zh.wikipedia.org/wiki/ISO_8601</a></p>
+<p>上面是日期格式标准的wiki</p>
+<p>当前的UTC时间是2016-01-07T01:58Z，其中Z是4位数字格式的时间偏移量，不写的时候默认不偏移。</p>
+<p> 其中，字母T代表使用UTC时间，字母Z代表时间偏移量，实际写法中字母Z应该被偏移量替换，例如 “2017-1-7T10:21+0800”或者”2017-1-7T10:21-0800”，字母Z被+0800和-0800替换了。</p>
+<p>在浏览器中直接new一个date对象，因为我们处于UTC+0800的时区，所以控制台给我们打印出来的时间是GMT+0800的时间</p>
+<p><img src="http://zoucz.com/blogimgs/2016-01-29/1454048193816.png" alt=""></p>
+<p>2016-01-07T00:00 代表UTC时区1月7日0时0分（在控制台中显示UTC+0800时区为8时0分）</p>
+<p><img src="http://zoucz.com/blogimgs/2016-01-29/1454048206377.png" alt=""></p>
+<p> 2016-01-07T00:00 0800 代表UTC+0800时区1月7日0时0分，2016-01-07T00:00 -0800 代表UTC-0800时区1月7日0时0分，在控制台中显示分别如下<br><img src="http://zoucz.com/blogimgs/2016-01-29/1454048217856.png" alt="">    </p>
+<p>通过日期字符串new一个Date对象，输入的时间字符串是2016-1-7 10:21，没有带ISO标准的“T”字母，因此浏览器认为我们想输入的是当地时间<br><img src="http://zoucz.com/blogimgs/2016-01-29/1454048233627.png" alt=""></p>
+<h1 id="HTML5-input标签datetime属性"><a href="#HTML5-input标签datetime属性" class="headerlink" title="HTML5 input标签datetime属性"></a>HTML5 input标签datetime属性</h1><p>下面问题来了，我要在页面上输入一个时间，存入数据库，上面说了那么多时区，那么用户在页面上输入的时间应该是哪个时区的呢，传到server，存入db的应该又是哪个时区的呢？</p>
+<p>经测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;input type=&quot;datetime&quot;  /&gt;  chrome上是不支持的</div><div class="line">&lt;input type=&quot;datetime-local&quot; /&gt; chrome支持</div></pre></td></tr></table></figure>
+<p>Google了一下据说是因为datetime输入框输入的是本地时区，考虑到时区的问题chrome没有支持此输入类型，会降级为text类型</p>
+<p>datetime-local输入类型chrome是支持的，获取的value格式是：</p>
+<p>“2016-1-7T10:21”</p>
+<p>如上面所述，这个时间是标准UTC时间，这种时间从前端到后台到存入db，都是不会发生错误的。</p>
+<p>但是对用户来说，他填写表单的时候想的时间肯定是他所在位置的本地时间，比如我输入”2016-1-7 10:21”，我真实想输入的时间是”2016-1-7T10:21+0800”，而不是”2016-1-7T10:21”。</p>
+<p>为了支持这种情况，我需要把”2016-1-7T10:21”转换为用户真实想要的当地时间”2016-1-7 10:21”，于是”2016-1-7 10:21”.replace(“T”,” “)，它实际代表的真实时间(UTC时间)是”2016-1-7T10:21+0800”</p>
+<p>这样在前端是没问题了，但是传到后端之后，这样的非ISO标准时间是没有携带时区信息的，服务器收到之后会将这个时间安装服务器所在时区来处理，处理之后所代表的真实时间就和用户输入的真实时间不同了。所以我们在前端得把时间转换为ISO标准时间格式再传给服务器，这样服务器就能明白用户输入的真正的时间了，另一种方法，也可以把时间用毫秒数表示，传到后端，不过这种方式可读性不太好。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 1.将字面时间转化为本地时间  2.将本地时间转换为真实GMT时间传入后台</div><div class="line">    function getRealGMT(datetime)&#123;</div><div class="line">        datetime=datetime.replace(&quot;T&quot;,&quot; &quot;);</div><div class="line">        var temp=new Date(datetime);</div><div class="line">        var realGMT=temp.getTime()+temp.getTimezoneOffset()*60000;</div><div class="line">        return new Date(realGMT).format(&quot;yyyy-MM-ddThh:mm&quot;);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>转换效果如下：<br><img src="http://zoucz.com/blogimgs/2016-01-29/1454048254331.png" alt=""></p>
+<h1 id="mysql时区"><a href="#mysql时区" class="headerlink" title="mysql时区"></a>mysql时区</h1><p>mysql可通过 show variables like ‘%time_zone%’；命令来查看数据库设置的时区。我们的CST时区代表的是中国区的时区，即UTC+0800<br>所以服务器把从前端收到的ISO日期 “2016-1-7T02:21”收到之后，写入mysql的datetime字段，mysql的datetime字段会根据它的CST时区把日期转换过来，于是显示的日期就是”2016-1-7 10:21”，代表的真实时间是”2016-1-7T10:21+0800”</p>
+
+        <p class="this-page-link">本文链接：<a href="http://www.zoucz.com/blog/2016/01/29/date-iso/">http://www.zoucz.com/blog/2016/01/29/date-iso/</a></p>
+        <p><a class="to-comments" href="http://www.zoucz.com/blog/2016/01/29/date-iso/#comments">☞ 参与评论</a></p>
+      </div>
+    </div>
+    
+    <div class="copyright" itemscope itemtype="http://schema.org/ProfilePage">
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">邹成卓 (zoucz)</a></li>
+		<li>发表日期:  2016-01-29 14:20:33</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/前端开发/">前端开发</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/前端开发/">前端开发</a>, <a class="article-tag-link" href="/blog/tags/时区/">时区</a>
+</li>
+		<li>版权声明: 自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+		<li>最后编辑时间: 2016-12-22 00:42:00</li>
+		<li>Feed订阅: <a href="/atom.xml"><i class="icon">&#x25c8;</i></a></li>
+	</ul>
+	<a href="/about/"><img src="/blogimgs/avatar150.png" /></a>
+</div>
+    <div class="share-article clearfix">
+    
+    <div class="ds-share" data-thread-key="date-iso" data-title="ISO日期格式标准" data-images="" data-content="时区简单理解https://zh.wikipedia.org/wiki/%E6%97%B6%E5%8C%BA上面的链接是时区的wiki说明，下面说说我记住的部分：GMT时区是格林威治标准时间，我把它理解为 “真实时间”U..." data-url="http://www.zoucz.com/blog/2016/01/29/date-iso/">
+      <div class="ds-share-inline">
+  <ul  class="ds-share-icons-16">
+    <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+    <li> <a class="ds-weibo" href="javascript:void(0);" data-service="weibo">新浪微博</a> </li>
+    <li> <a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a> </li>
+  </ul>
+  <div class="ds-share-icons-more">
+  </div>
+</div>
+    </div>
+    </div>
+    <em class="arrow-expend icon">&#xe618;
+      <ul>
+        <li><a href="/entry/">博客</a></li>
+        <li><a href="/message/">留言</a></li>
+        <li><a href="/about/">关于</a></li>
+        <li><a href="/demo/">实验室</a></li>
+        <li><a href="/comments/">最近评论</a></li>
+        <li><a href="/friends/">友情链接</a></li>
+      </ul>
+    </em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/2016/02/02/english-coding/" class="post-prev">
+      <i class="icon">&#x261c;</i>
+      
+        <b>为什么英语对编程很重要？</b>
+      
+    </a>
+  
+  
+    <a href="/blog/2016/01/29/javascript-RegExp/" class="post-next">
+      <b>详解Javascript中正则表达式的使用</b>
+      <i class="icon">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed">
+  
+  <a href="/blog/2016/02/02/english-coding/" class="prev" title="为什么英语对编程很重要？">
+    <i class="icon">&#xe600;</i>
+    
+    <b>为什么英语对编程很重要？</b>
+    
+  </a>
+  
+  
+  <a href="/blog/2016/01/29/javascript-RegExp/" class="next" title="详解Javascript中正则表达式的使用">
+    <i class="icon">&#x261e;</i>
+    <b>详解Javascript中正则表达式的使用</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<div class="sidebar">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>设置</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">截屏分享</a></p>
+          <p><a href="" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="/" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/" target="_blank">Demo平台</a></p>
+          <p><a href="/" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>友链</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/atom.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/atom.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-copostntent">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="date-iso"
+	   data-disqus-identifier="date-iso">评论内容</a>
+	<a href="javascript: void(0);" id="footer-nav-on">相关文章</a>
+	<a href="/friends">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div>
+		
+
+
+
+<div class="ds-thread" data-thread-key="date-iso" data-title="ISO日期格式标准" data-url="http://www.zoucz.com/blog/2016/01/29/date-iso/" data-name="zoucz">
+	<div class="ds-loading">
+		<img src="/blogimgs/loading.gif" alt="loading..."/>
+		<p>这网速真是弱爆了...客官稍等,评论还在加载~</p>
+	</div>
+</div>
+
+
+
+
+
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment"><span>（点击评论）</span>古今多少事，都付笑谈中！</div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span>2016-07-19 » </span><a href="/blog/2016/07/19/gulp-webpack-vue/">做一个gulp+webpack+vue的单页应用开发架子</a>
+				<div>1.目标最近项目上的事情不多，根据我自己的开发习惯，决定开发一些简单的开发架子，方便以后事情多的时候...</div>
+			</li>
+			
+			<li>
+				<span>2016-01-29 » </span><a href="/blog/2016/01/29/javascript-RegExp/">详解Javascript中正则表达式的使用</a>
+				<div>本文章转自我的博客园博客 原文地址     正则表达式用来处理字符串特别好用，在JavaScript...</div>
+			</li>
+			
+			<li>
+				<span>2016-01-29 » </span><a href="/blog/2016/01/29/get-file-from-clipboard/">浏览器中用JavaScript获取剪切板中的文件</a>
+				<div>在网页上编辑内容时，有时候需要插入图片，一般的做法是：  从网络上下载图片至本地 or  截图保存至...</div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+		<a href="/entry/" class="relative-to-comment-wrapper"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="h" target="_blank">小胡子哥的博客</a> » <span>0</span></li>
+			
+			<li><a href="/friends/">申请友链 »</a></li>
+		</ul>
+	</div>
+</div>
+			<div class="website-info">
+	<!--<span>Copyright &copy;2013-2016 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">湘ICP备14007107号-1</a></small></span>-->
+	<a href="/about#contact">联系方式</a>
+</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<a class="wechart icon">&#xe60d;<span><img src="/wechart.png" title="扫码添加邹成卓微信"/> </span></a>
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr">纠错模式</div>
+</body>
+</html>

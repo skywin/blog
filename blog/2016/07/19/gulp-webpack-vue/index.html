@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>做一个gulp+webpack+vue的单页应用开发架子 | 邹成卓的个人网站</title>
+  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=0">
+  <meta name="email" content="405966530@qq.com">
+  <meta name="description" content="1.目标最近项目上的事情不多，根据我自己的开发习惯，决定开发一些简单的开发架子，方便以后事情多的时候直接套用。本文讲的一个gulp+webpack+vue的单页应用架子，想要达到的目的：可以通过命令打包开发chunk，并支持热替换可以通过命令打包可发布的chunk支持路由路由中的代码实现按需加载用C">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="做一个gulp+webpack+vue的单页应用开发架子 | 邹成卓的个人网站">
+  <meta property="og:url" content="http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/">
+  <meta property="og:site_name" content="做一个gulp+webpack+vue的单页应用开发架子">
+  <meta property="og:description" content="1.目标最近项目上的事情不多，根据我自己的开发习惯，决定开发一些简单的开发架子，方便以后事情多的时候直接套用。本文讲的一个gulp+webpack+vue的单页应用架子，想要达到的目的：可以通过命令打包开发chunk，并支持热替换可以通过命令打包可发布的chunk支持路由路由中的代码实现按需加载用C">
+  <link rel="shoticon" href="http://www.zoucz.com/favicon.ico" type="image/x-icon">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <link href="http://www.zoucz.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="alternate" type="application/rss+xml" href="http://www.zoucz.com/atom.xml" title="邹成卓的个人网站" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20151229" type="text/css">
+  <script src="/public/js/jquery.js" type="text/javascript"></script>
+  <script src="/public/js/main.js?v=20151229" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="rainbow"></div>
+    <div class="container">
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">做一个gulp+webpack+vue的单页应用开发架子</h1>
+        <a href="/entry/"><img src="/blogimgs/avatar150.png" alt="邹成卓" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/" itemprop="author">邹成卓</a></span>
+        <span><time itemprop="timeCreated">2016-07-19 15:06:06</time></span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/前端开发/">前端开发</a>
+
+</span>
+        <span>标签: 
+<a class="article-tag-link" href="/blog/tags/gulp/">gulp</a>, <a class="article-tag-link" href="/blog/tags/vue/">vue</a>
+</span>
+        <span>评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="gulp-webpack-vue"
+                      data-disqus-identifier="gulp-webpack-vue"></a></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处">
+          <p>原文地址：<a href="http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/">http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/</a>，<a href="http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/#footer-nav-on">参与评论</a></p>
+          <img src="http://www.zoucz.com/blogimgs/avatar150.png">
+        </div>
+        <h2 id="1-目标"><a href="#1-目标" class="headerlink" title="1.目标"></a>1.目标</h2><p>最近项目上的事情不多，根据我自己的开发习惯，决定开发一些简单的开发架子，方便以后事情多的时候直接套用。本文讲的一个gulp+webpack+vue的单页应用架子，想要达到的目的：</p>
+<ul>
+<li>可以通过命令打包开发chunk，并支持热替换</li>
+<li>可以通过命令打包可发布的chunk</li>
+<li>支持路由</li>
+<li>路由中的代码实现按需加载</li>
+<li>用CommonJs的风格组织代码</li>
+<li>代码结构尽量清晰易懂    </li>
+</ul>
+<p>尽我所能先做出一个满足以上特点的架子吧，最近看完ES6，准备再去看看flux和reduce，看过之后再来思考下前端数据如何管理比较科学规范。架子中有做的不规范可改进的地方，烦请大家指出，我好更新。<br>首先来看一下整个架子的结构：<br><img src="http://zoucz.com/blogimgs/2016-07-19/1468898445051.png" alt=""></p>
+<h2 id="2-实现"><a href="#2-实现" class="headerlink" title="2.实现"></a>2.实现</h2><h3 id="2-1合并库文件"><a href="#2-1合并库文件" class="headerlink" title="2.1合并库文件"></a>2.1合并库文件</h3><p>库文件不会随业务代码发生变化，所以所有库文件打包成一个文件就好了，这部分代码需要直接在页面中以<code>&lt;script&gt;&lt;/script&gt;</code>标签引入，不能和业务代码打包到一起。如果和业务代码打包到一起，一旦业务代码发生变化，整个打包的文件在浏览器中都需要被重新加载，这种做法不利于客户端做缓存，也会使webpack打包业务代码的过程变得非常慢，所以这里使用gulp合并一下库文件：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * 合并lib文件</div><div class="line"> */</div><div class="line">gulp.task(<span class="string">'concat-lib'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    gulp.src([<span class="string">'vue/dist/vue.min.js'</span>,<span class="string">'vue-router/dist/vue-router.min.js'</span>],&#123;</div><div class="line">        <span class="attr">cwd</span>:<span class="string">'../lib'</span></div><div class="line">    &#125;).pipe(concat(<span class="string">'vue.min.js'</span>)).pipe(gulp.dest(<span class="string">'../release'</span>));</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<h3 id="2-2组织业务代码"><a href="#2-2组织业务代码" class="headerlink" title="2.2组织业务代码"></a>2.2组织业务代码</h3><p>从上图可以看到，所有的业务开发代码都放在src目录下，展开来看：<br><img src="http://zoucz.com/blogimgs/2016-07-19/1468898616279.png" alt=""></p>
+<ul>
+<li>components目录用来存放公用的vue组件，这块架子中没有，所以是空着的</li>
+<li>css用来存放所有的样式文件，modules和components目录下分别存放各模块和各个组件所使用的样式，app.css是主入口页面样式，main.css是所有样式。把样式集中起来是为了方便样式的打包。</li>
+<li>modules用来存放各个模块的代码，模块的模板和js代码放在同一目录下。</li>
+<li>app.js是程序主入口js，在此文件中定义单页应用的路由，指向各个模块</li>
+<li>index.html是应用主页面</li>
+</ul>
+<p>核心代码是这块：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Vue = <span class="built_in">require</span>(<span class="string">'vue'</span>)</div><div class="line"><span class="keyword">var</span> VueRouter = <span class="built_in">require</span>(<span class="string">'vue-router'</span>);</div><div class="line">Vue.use(VueRouter);</div><div class="line"><span class="keyword">var</span> compo1=<span class="built_in">require</span>(<span class="string">'./modules/module1'</span>);</div><div class="line"><span class="built_in">require</span>(<span class="string">'./css/main.css'</span>);</div><div class="line"></div><div class="line"><span class="comment">// 路由器需要一个根组件。</span></div><div class="line"><span class="comment">// 出于演示的目的，这里使用一个空的组件，直接使用 HTML 作为应用的模板</span></div><div class="line"><span class="keyword">var</span> App = Vue.extend(&#123;&#125;)</div><div class="line"></div><div class="line"><span class="comment">// 创建一个路由器实例</span></div><div class="line"><span class="comment">// 创建实例时可以传入配置参数进行定制，为保持简单，这里使用默认配置</span></div><div class="line"><span class="keyword">var</span> router = <span class="keyword">new</span> VueRouter()</div><div class="line"></div><div class="line"><span class="comment">// 定义路由规则</span></div><div class="line"><span class="comment">// 每条路由规则应该映射到一个组件。这里的“组件”可以是一个使用 Vue.extend</span></div><div class="line"><span class="comment">// 创建的组件构造函数，也可以是一个组件选项对象。</span></div><div class="line"><span class="comment">// 稍后我们会讲解嵌套路由</span></div><div class="line">router.map(&#123;</div><div class="line">    <span class="string">'/'</span>: &#123;</div><div class="line">        <span class="attr">component</span>: compo1</div><div class="line">    &#125;,</div><div class="line">    <span class="string">'/path1'</span>: &#123;</div><div class="line">        <span class="attr">component</span>: compo1</div><div class="line">    &#125;,</div><div class="line">    <span class="string">'/path2'</span>: &#123;</div><div class="line">        <span class="attr">component</span>: <span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</div><div class="line">            <span class="comment">//amd规范 实现效果：</span></div><div class="line">            <span class="comment">//路由1中的模块和主页面模块打包在一起</span></div><div class="line">            <span class="comment">//路由2中的模块按需加载</span></div><div class="line">            <span class="built_in">require</span>([<span class="string">'./modules/module2'</span>],resolve);</div><div class="line">            <span class="comment">//commonJs规范实现方式:</span></div><div class="line">            <span class="comment">//require.ensure([],function(require)&#123;</span></div><div class="line">            <span class="comment">//    var comm2=require('./components/compo2');</span></div><div class="line">            <span class="comment">//    resolve(comm2)</span></div><div class="line">            <span class="comment">//&#125;);</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"><span class="comment">//默认路径</span></div><div class="line"><span class="comment">//router.go('/path1');</span></div><div class="line"><span class="comment">// 现在我们可以启动应用了！</span></div><div class="line"><span class="comment">// 路由器会创建一个 App 实例，并且挂载到选择符 #app 匹配的元素上。</span></div><div class="line">router.start(App, <span class="string">'#app'</span>)</div></pre></td></tr></table></figure></p>
+<p>默认模块是moduel1，/path1路由指向module1，/path2路由指向module2，module2的模块并不是和module1一样在主页面中一开始就加载好的，而是在路由到此路径后才去加载，app.js中提供了vue组件文档中提供的两种方式：CommonJs和AMD两种规范的方式来加载，两种方式是等价的。</p>
+<p><code>require(&#39;./css/main.css&#39;);</code> 把所有css加载到应用中，以便在开发模式下可以看到样式，在打包发布代码的时候会忽略此require，将样式打包成独立的文件。</p>
+<h3 id="2-3打包开发代码"><a href="#2-3打包开发代码" class="headerlink" title="2.3打包开发代码"></a>2.3打包开发代码</h3><p>打包开发代码的webpack配置是build目录下的webpack.config.dev.js<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</div><div class="line"><span class="keyword">var</span> path=<span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"><span class="built_in">module</span>.exports=&#123;</div><div class="line">    <span class="comment">//这里写成数组是为了dev server插入服务配置</span></div><div class="line">    entry: &#123;</div><div class="line">        <span class="string">"app"</span>:[<span class="string">'../src/app.js'</span>],</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">output</span>:&#123;</div><div class="line">        <span class="attr">path</span>:path.resolve(__dirname, <span class="string">"../release"</span>),<span class="comment">//__dirname+'/../release',</span></div><div class="line">        publicPath: <span class="string">"/release/"</span>,<span class="comment">//dev server 会从此路径去拿hot-update.json</span></div><div class="line">        filename:<span class="string">'[name].bundle.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">externals</span>: &#123;</div><div class="line">        <span class="string">'vue'</span>: <span class="string">'Vue'</span>,</div><div class="line">        <span class="string">'vue-router'</span>:<span class="string">'VueRouter'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">module</span>: &#123;</div><div class="line">        <span class="attr">loaders</span>: [</div><div class="line">            &#123; <span class="attr">test</span>: <span class="regexp">/\.css$/</span>, <span class="attr">loader</span>: <span class="string">'style-loader!css-loader'</span> &#125;,</div><div class="line">            &#123;<span class="attr">test</span>:<span class="regexp">/\.html$/</span>,<span class="attr">loader</span>:<span class="string">'html-loader'</span>&#125;</div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">plugins</span>: [</div><div class="line"></div><div class="line">    ],</div><div class="line">    <span class="attr">devtool</span>: <span class="string">"source-map"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>程序主入口是app.js，所有entry只需要配置一个app.js。<br>output配置中的publicPath是用来配置项目中静态文件路径的，这里开发过程中会使用webpack-dev-server，给配置到release目录下就行了。<br>externals下面配置的是通过标签引入，可以在全局环境下访问到的变量，可以通过require这里配置的key来获取那些变量。<br><code>devtool: &quot;source-map&quot;</code> 可以为压缩之后的代码生成source-map文件，这里开发打包的代码并没有被压缩，所以这个其实没意义。<br><code>{test:/\.html$/,loader:&#39;html-loader&#39;}</code> 是用来在组件中加载html模板的：</p>
+<p><img src="http://zoucz.com/blogimgs/2016-07-19/1468908847635.png" alt=""><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> template=<span class="built_in">require</span>(<span class="string">'./module1.html'</span>);</div><div class="line"><span class="comment">// 定义组件</span></div><div class="line"><span class="keyword">var</span> comm = Vue.extend(&#123;</div><div class="line">    <span class="attr">template</span>: template,</div><div class="line">    <span class="attr">data</span>:<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">items</span>:[&#123;<span class="attr">a</span>:<span class="number">1</span>,<span class="attr">b</span>:<span class="number">2</span>,<span class="attr">c</span>:<span class="number">3</span>&#125;,&#123;<span class="attr">a</span>:<span class="number">4</span>,<span class="attr">b</span>:<span class="number">5</span>,<span class="attr">c</span>:<span class="number">5</span>&#125;,&#123;<span class="attr">a</span>:<span class="number">7</span>,<span class="attr">b</span>:<span class="number">8</span>,<span class="attr">c</span>:<span class="number">9</span>&#125;]</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>用上面的配置来打包，就会得到开发版本的打包代码了。</p>
+<h3 id="2-4使用webpack-dev-server和热替换插件HotModuleReplacementPlugin"><a href="#2-4使用webpack-dev-server和热替换插件HotModuleReplacementPlugin" class="headerlink" title="2.4使用webpack-dev-server和热替换插件HotModuleReplacementPlugin"></a>2.4使用webpack-dev-server和热替换插件HotModuleReplacementPlugin</h3><p>为了方便开发调试，需要启动一个server来访问项目，并支持热替换，自动刷新浏览器，以方便修改代码之后能够实时看到效果。<br>在gulpfile.js做如下配置：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">ar webpackConfigDev=<span class="built_in">require</span>(<span class="string">"./webpack.config.dev.js"</span>);</div><div class="line"><span class="keyword">var</span> WebpackDevServer = <span class="built_in">require</span>(<span class="string">"webpack-dev-server"</span>);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * 使用测试配置打包，启动hot dev server</div><div class="line"> */</div><div class="line">gulp.task(<span class="string">'webpack-dev'</span>,[<span class="string">'concat-lib'</span>],<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> config = <span class="built_in">Object</span>.create(webpackConfigDev);</div><div class="line">    <span class="comment">//这两项配置原本是在webpack.config.dev.js里边配置，可是通过gulp启动devserver，那种配置无效，只能在此处写入</span></div><div class="line">    <span class="comment">//官网的解释是webpack-dev-server没有权限读取webpack的配置</span></div><div class="line">    config.entry.app.unshift(<span class="string">"webpack-dev-server/client?http://localhost:8080/"</span>, <span class="string">"webpack/hot/dev-server"</span>);</div><div class="line">    config.plugins.push(<span class="keyword">new</span> webpack.HotModuleReplacementPlugin());</div><div class="line">    <span class="keyword">var</span> compiler = webpack(config);</div><div class="line">    <span class="keyword">var</span> server = <span class="keyword">new</span> WebpackDevServer(compiler, &#123;</div><div class="line">        <span class="attr">contentBase</span>: <span class="string">"../"</span>,</div><div class="line">        <span class="attr">publicPath</span>: <span class="string">"/release/"</span>,</div><div class="line">        <span class="attr">hot</span>: <span class="literal">true</span>,</div><div class="line">        <span class="attr">compress</span>: <span class="literal">false</span>,</div><div class="line">        <span class="attr">stats</span>: &#123; <span class="attr">colors</span>: <span class="literal">true</span> &#125;</div><div class="line">    &#125;);</div><div class="line">    server.listen(<span class="number">8080</span>, <span class="string">"localhost"</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;&#125;);</div><div class="line">    <span class="comment">// server.close();</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>这样会启动一个本地的8080端口监听，用来访问某个目录下的静态文件</p>
+<ul>
+<li><code>contentBase: &quot;../&quot;</code> 配置，指定了静态文件目录在项目根目录下，所以访问<a href="http://localhost:8080" target="_blank" rel="external">http://localhost:8080</a> 会看到根目录下的文件列表，点进去src目录，就会默认访问index.html，看到单页应用的效果了</li>
+<li><code>publicPath: &quot;/release/&quot;</code> 这个配置很重要，它指定了webpack-dev-server提供的打包静态文件路径，值得注意的是，使用WebpackDevServer的时候，并不会在release目录生成webpack打包文件，只会在内存中生成打包文件，通过localhost:8080/release/ 路径，可以访问到开发打包后的代码。<br>通过gulp启动此server之后，访问<a href="http://localhost:8080/src" target="_blank" rel="external">http://localhost:8080/src</a> 路径，可以看到用下面的效果：</li>
+</ul>
+<p><img src="http://zoucz.com/blogimgs/2016-07-19/vuegif.gif" alt=""><br>可以看到，访问主页面的时候，加载了app.bundle.js打包文件，访问路由/path2的时候，才会去加载1.1.bundle.js文件，子组件是延迟2s后才加载的。<br>更新代码之后，会实时打包并刷新浏览器，看到实时效果。</p>
+<h3 id="2-5打包生产环境代码"><a href="#2-5打包生产环境代码" class="headerlink" title="2.5打包生产环境代码"></a>2.5打包生产环境代码</h3><p>和开发代码不同，生产环境代码具有以下特点：</p>
+<ul>
+<li>代码需要压缩</li>
+<li>打包生成的文件名中需要包含文件hash值，以方便控制客户端缓存</li>
+<li>css不能像开发环境那样打包到js代码中，需要打包成独立的文件，在页面开头直接引入<br>基于以上特点，webpack配置文件如下：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</div><div class="line"><span class="keyword">var</span> ExtractTextPlugin = <span class="built_in">require</span>(<span class="string">"extract-text-webpack-plugin"</span>);</div><div class="line"><span class="keyword">var</span> path=<span class="built_in">require</span>(<span class="string">'path'</span>);</div><div class="line"><span class="keyword">var</span> cssExtract=<span class="keyword">new</span> ExtractTextPlugin(<span class="string">"[name].[contenthash:8].css"</span>);</div><div class="line"><span class="built_in">module</span>.exports=&#123;</div><div class="line">    <span class="attr">entry</span>: &#123;</div><div class="line">        <span class="attr">index</span>:<span class="string">'../src/app.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">output</span>:&#123;</div><div class="line">        <span class="attr">path</span>:path.resolve(__dirname, <span class="string">"../release"</span>),</div><div class="line">        <span class="attr">publicPath</span>:<span class="string">""</span>,<span class="comment">//TODO 填写生产环境静态文件路径</span></div><div class="line">        filename:<span class="string">'[name].[chunkhash:8].bundle.js'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">externals</span>: &#123;</div><div class="line">        <span class="string">'vue'</span>: <span class="string">'Vue'</span>,</div><div class="line">        <span class="string">'vue-router'</span>:<span class="string">'VueRouter'</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">module</span>: &#123;</div><div class="line">        <span class="attr">loaders</span>: [</div><div class="line">            &#123; <span class="attr">test</span>: <span class="regexp">/\.css$/</span>, <span class="attr">loader</span>: cssExtract.extract(<span class="string">"style-loader"</span>, <span class="string">"css-loader"</span>) &#125;,</div><div class="line">            &#123;<span class="attr">test</span>:<span class="regexp">/\.html$/</span>,<span class="attr">loader</span>:<span class="string">'html-loader'</span>&#125;</div><div class="line">        ]</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">plugins</span>: [</div><div class="line">        <span class="keyword">new</span> webpack.optimize.UglifyJsPlugin(&#123;</div><div class="line">            <span class="attr">compress</span>: &#123;</div><div class="line">                <span class="attr">drop_console</span>: <span class="literal">true</span>,</div><div class="line">                <span class="attr">warnings</span>: <span class="literal">false</span></div><div class="line">            &#125;</div><div class="line">        &#125;),</div><div class="line">        cssExtract</div><div class="line">    ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>其中publicPath是填写静态文件路径的，如果图片或其他静态资源需要存放在CDN服务器上，可以把CDN地址配置到这里。<br>生成打包文件之后，可以通过gulp替换掉主入口文件 index.html里面的静态文件路径，这里通过webpack模板也可以完成此工作，但配置较为繁琐，个人感觉还是通过gulp来替换比较方便一点：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gulp.src(<span class="string">'../src/index.html'</span>)</div><div class="line">        <span class="comment">//.pipe(greplace(/xxxxx/g,"xxxxx"))</span></div><div class="line">        .pipe(gulp.dest(<span class="string">'../release'</span>));</div></pre></td></tr></table></figure></p>
+<p>打包后的代码：<br><img src="http://zoucz.com/blogimgs/2016-07-19/1468911336639.png" alt=""><br>后面的步骤就是上传静态文件到CDN或其他上线流程了，这里可以通过根据自己业务编写的gulp插件来完成，大家业务不同，处理方式不尽相同，我就不继续往下写了。</p>
+<h2 id="3-把命令都整合到npm中"><a href="#3-把命令都整合到npm中" class="headerlink" title="3.把命令都整合到npm中"></a>3.把命令都整合到npm中</h2><p>我个人不太喜欢项目根目录下一堆跟打包相关的文件，所以在这个项目中，我把所有跟打包相关的文件都放到了build目录下，然后在package.json中：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">"scripts": &#123;</div><div class="line">    "dev": "gulp default --gulpfile build/gulpfile.js",</div><div class="line">    "build": "gulp build --gulpfile build/gulpfile.js",</div><div class="line">    "release": "gulp release --gulpfile build/gulpfile.js"</div><div class="line">  &#125;,</div></pre></td></tr></table></figure></p>
+<p>这样就可以使用npm命令来执行上面的操作了：<br><code>npm run dev</code> 启动webpack-dev-server，使用开发webpack配置来打包代码，支持热替换<br><code>npm run build</code> 打包开发代码<br><code>npm run release</code> 打包生产环境代码</p>
+<h2 id="4-后续"><a href="#4-后续" class="headerlink" title="4.后续"></a>4.后续</h2><p>对于一个可用单页应用而言，这个架子可能还缺着很多东西，对前端数据流程的管理、网络请求的管理、公共组件的组织等，在以后的项目中都会加上这些东西，用到了再往里边更新吧！</p>
+<p>代码地址：<a href="https://github.com/zouchengzhuo/scaffold/tree/master/gulp-webpack-vue" target="_blank" rel="external">https://github.com/zouchengzhuo/scaffold/tree/master/gulp-webpack-vue</a></p>
+
+        <p class="this-page-link">本文链接：<a href="http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/">http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/</a></p>
+        <p><a class="to-comments" href="http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/#comments">☞ 参与评论</a></p>
+      </div>
+    </div>
+    
+    <div class="copyright" itemscope itemtype="http://schema.org/ProfilePage">
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">邹成卓 (zoucz)</a></li>
+		<li>发表日期:  2016-07-19 15:06:06</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/前端开发/">前端开发</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/gulp/">gulp</a>, <a class="article-tag-link" href="/blog/tags/vue/">vue</a>
+</li>
+		<li>版权声明: 自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+		<li>最后编辑时间: 2016-12-22 00:42:00</li>
+		<li>Feed订阅: <a href="/atom.xml"><i class="icon">&#x25c8;</i></a></li>
+	</ul>
+	<a href="/about/"><img src="/blogimgs/avatar150.png" /></a>
+</div>
+    <div class="share-article clearfix">
+    
+    <div class="ds-share" data-thread-key="gulp-webpack-vue" data-title="做一个gulp+webpack+vue的单页应用开发架子" data-images="" data-content="1.目标最近项目上的事情不多，根据我自己的开发习惯，决定开发一些简单的开发架子，方便以后事情多的时候直接套用。本文讲的一个gulp+webpack+vue的单页应用架子，想要达到的目的：可以通过命令打包开发chunk，并..." data-url="http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/">
+      <div class="ds-share-inline">
+  <ul  class="ds-share-icons-16">
+    <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+    <li> <a class="ds-weibo" href="javascript:void(0);" data-service="weibo">新浪微博</a> </li>
+    <li> <a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a> </li>
+  </ul>
+  <div class="ds-share-icons-more">
+  </div>
+</div>
+    </div>
+    </div>
+    <em class="arrow-expend icon">&#xe618;
+      <ul>
+        <li><a href="/entry/">博客</a></li>
+        <li><a href="/message/">留言</a></li>
+        <li><a href="/about/">关于</a></li>
+        <li><a href="/demo/">实验室</a></li>
+        <li><a href="/comments/">最近评论</a></li>
+        <li><a href="/friends/">友情链接</a></li>
+      </ul>
+    </em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/2016/08/02/nodejs-unittest-mochajs/" class="post-prev">
+      <i class="icon">&#x261c;</i>
+      
+        <b>javascript单元测试框架mochajs详解</b>
+      
+    </a>
+  
+  
+    <a href="/blog/2016/07/01/czevent/" class="post-next">
+      <b>自己实现一个javascript事件模块</b>
+      <i class="icon">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed">
+  
+  <a href="/blog/2016/08/02/nodejs-unittest-mochajs/" class="prev" title="javascript单元测试框架mochajs详解">
+    <i class="icon">&#xe600;</i>
+    
+    <b>javascript单元测试框架mochajs详解</b>
+    
+  </a>
+  
+  
+  <a href="/blog/2016/07/01/czevent/" class="next" title="自己实现一个javascript事件模块">
+    <i class="icon">&#x261e;</i>
+    <b>自己实现一个javascript事件模块</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<div class="sidebar">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>设置</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">截屏分享</a></p>
+          <p><a href="" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="/" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/" target="_blank">Demo平台</a></p>
+          <p><a href="/" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>友链</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/atom.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/atom.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-copostntent">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="gulp-webpack-vue"
+	   data-disqus-identifier="gulp-webpack-vue">评论内容</a>
+	<a href="javascript: void(0);" id="footer-nav-on">相关文章</a>
+	<a href="/friends">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div>
+		
+
+
+
+<div class="ds-thread" data-thread-key="gulp-webpack-vue" data-title="做一个gulp+webpack+vue的单页应用开发架子" data-url="http://www.zoucz.com/blog/2016/07/19/gulp-webpack-vue/" data-name="zoucz">
+	<div class="ds-loading">
+		<img src="/blogimgs/loading.gif" alt="loading..."/>
+		<p>这网速真是弱爆了...客官稍等,评论还在加载~</p>
+	</div>
+</div>
+
+
+
+
+
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment"><span>（点击评论）</span>古今多少事，都付笑谈中！</div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span>2016-01-29 » </span><a href="/blog/2016/01/29/date-iso/">ISO日期格式标准</a>
+				<div>时区简单理解https://zh.wikipedia.org/wiki/%E6%97%B6%E5%8...</div>
+			</li>
+			
+			<li>
+				<span>2016-01-29 » </span><a href="/blog/2016/01/29/javascript-RegExp/">详解Javascript中正则表达式的使用</a>
+				<div>本文章转自我的博客园博客 原文地址     正则表达式用来处理字符串特别好用，在JavaScript...</div>
+			</li>
+			
+			<li>
+				<span>2016-01-29 » </span><a href="/blog/2016/01/29/get-file-from-clipboard/">浏览器中用JavaScript获取剪切板中的文件</a>
+				<div>在网页上编辑内容时，有时候需要插入图片，一般的做法是：  从网络上下载图片至本地 or  截图保存至...</div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+		<a href="/entry/" class="relative-to-comment-wrapper"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="h" target="_blank">小胡子哥的博客</a> » <span>0</span></li>
+			
+			<li><a href="/friends/">申请友链 »</a></li>
+		</ul>
+	</div>
+</div>
+			<div class="website-info">
+	<!--<span>Copyright &copy;2013-2016 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">湘ICP备14007107号-1</a></small></span>-->
+	<a href="/about#contact">联系方式</a>
+</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<a class="wechart icon">&#xe60d;<span><img src="/wechart.png" title="扫码添加邹成卓微信"/> </span></a>
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr">纠错模式</div>
+</body>
+</html>

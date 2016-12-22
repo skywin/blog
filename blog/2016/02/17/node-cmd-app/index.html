@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>nodejs模块发布及命令行程序开发 | 邹成卓的个人网站</title>
+  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=0">
+  <meta name="email" content="405966530@qq.com">
+  <meta name="description" content="前置技能npm工具为nodejs提供了一个模块和管理程序模块依赖的机制，当我们希望把模块贡献出去给他人使用时，可以把我们的程序发布到npm提供的公共仓库中，为了方便模块的管理，npm规定要使用一个叫package.json的文件来描述我们模块的名称、版本等信息。    我们贡献出去的程序模块，可能也">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="nodejs模块发布及命令行程序开发 | 邹成卓的个人网站">
+  <meta property="og:url" content="http://www.zoucz.com/blog/2016/02/17/node-cmd-app/">
+  <meta property="og:site_name" content="nodejs模块发布及命令行程序开发">
+  <meta property="og:description" content="前置技能npm工具为nodejs提供了一个模块和管理程序模块依赖的机制，当我们希望把模块贡献出去给他人使用时，可以把我们的程序发布到npm提供的公共仓库中，为了方便模块的管理，npm规定要使用一个叫package.json的文件来描述我们模块的名称、版本等信息。    我们贡献出去的程序模块，可能也">
+  <link rel="shoticon" href="http://www.zoucz.com/favicon.ico" type="image/x-icon">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <link href="http://www.zoucz.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="alternate" type="application/rss+xml" href="http://www.zoucz.com/atom.xml" title="邹成卓的个人网站" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20151229" type="text/css">
+  <script src="/public/js/jquery.js" type="text/javascript"></script>
+  <script src="/public/js/main.js?v=20151229" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="rainbow"></div>
+    <div class="container">
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">nodejs模块发布及命令行程序开发</h1>
+        <a href="/entry/"><img src="/blogimgs/avatar150.png" alt="邹成卓" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/" itemprop="author">邹成卓</a></span>
+        <span><time itemprop="timeCreated">2016-02-17 18:01:17</time></span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/nodejs/">nodejs</a>
+
+</span>
+        <span>标签: 
+<a class="article-tag-link" href="/blog/tags/nodejs/">nodejs</a>, <a class="article-tag-link" href="/blog/tags/npm/">npm</a>
+</span>
+        <span>评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="node-cmd-app"
+                      data-disqus-identifier="node-cmd-app"></a></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处">
+          <p>原文地址：<a href="http://www.zoucz.com/blog/2016/02/17/node-cmd-app/">http://www.zoucz.com/blog/2016/02/17/node-cmd-app/</a>，<a href="http://www.zoucz.com/blog/2016/02/17/node-cmd-app/#footer-nav-on">参与评论</a></p>
+          <img src="http://www.zoucz.com/blogimgs/avatar150.png">
+        </div>
+        <h1 id="前置技能"><a href="#前置技能" class="headerlink" title="前置技能"></a>前置技能</h1><ul>
+<li>npm工具为nodejs提供了一个模块和管理程序模块依赖的机制，当我们希望把模块贡献出去给他人使用时，可以把我们的程序发布到npm提供的公共仓库中，为了方便模块的管理，npm规定要使用一个叫package.json的文件来描述我们模块的名称、版本等信息。    </li>
+<li>我们贡献出去的程序模块，可能也依赖了别人所编写的模块，所以需要在package.json中写明我们依赖了哪些模块，便于别人安装。    </li>
+<li>简单的nodejs程序可以通过 node xxx.js 来运行，当我们希望直接在控制台中使用xxx命令运行nodejs程序时，需要创建一个cmd命令文件(windows下)，并把它放到path路径下，npm提供了一个自动完成这个工作的流程，这个也是在package.json里边配置的。</li>
+</ul>
+<p>基于以上几点，我觉得有必要挨个理解一下package.json里边的配置项：<a href="http://zoucz.com/blog/2016/02/17/npm-package" target="_blank" rel="external">我理解翻译的package.json文档</a>    </p>
+<h1 id="模块发布"><a href="#模块发布" class="headerlink" title="模块发布"></a>模块发布</h1><p>发布一个npm模块非常简单。</p>
+<h2 id="注册npm账户"><a href="#注册npm账户" class="headerlink" title="注册npm账户"></a>注册npm账户</h2><p>这个账户注册体验多好啊，不过记得密码别搞忘记了。<br>npm adduser<br>Username: zoucz<br>Password: ******<br>Email: 405966530@qq.com   </p>
+<h2 id="创建一个测试模块"><a href="#创建一个测试模块" class="headerlink" title="创建一个测试模块"></a>创建一个测试模块</h2><p>新建一个文件夹，npm init，一路enter ，要注意的是name不能是已经被别人抢占的，可以到<a href="http://npmjs.org" target="_blank" rel="external">http://npmjs.org</a>这里查询。<br>此时文件夹下会生成一个package.json文件，如果看过package.json里边配置的含义，这里就比较好理解了。<br>新建一个index.js，内容如下：<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455699748299.png" alt=""><br>此时模块就创建完毕了，简单吧！    </p>
+<h2 id="发布模块"><a href="#发布模块" class="headerlink" title="发布模块"></a>发布模块</h2><p>在刚刚新建的文件夹下打开cmd，运行npm publish ，模块发布完毕！<br>要注意的是每次发布的时候都需要增加版本号。<br>此时在<a href="http://npmjs.org" target="_blank" rel="external">http://npmjs.org</a>这里就可以查询到刚刚发布的模块了，我测试模块名称是zoucz，那么此时别人也可以通过 npm install zoucz来使用我发布的模块了。    </p>
+<h1 id="开发控制台命令程序"><a href="#开发控制台命令程序" class="headerlink" title="开发控制台命令程序"></a>开发控制台命令程序</h1><p>以windows下为例，我们怎么样才能创建一个cmd命令呢？  </p>
+<p>1.在环境变量里边添加一段：”;D:/test”  </p>
+<p>2.在d盘test目录下创建一个mycmd.cmd文件  </p>
+<p>这时就可以使用mycmd命令了。那么要怎么在cmd中调用node程序呢？ 很简单：  </p>
+<p>3.在那个mycmd.cmd文件里边写上  node path/to/xxx.js，就可以了。 </p>
+<p>使用npm创建控制台命令程序，我们不需要自己完成上面的步骤，只需要增加一行配置就可以了  </p>
+<h2 id="添加要执行的nodejs代码文件"><a href="#添加要执行的nodejs代码文件" class="headerlink" title="添加要执行的nodejs代码文件"></a>添加要执行的nodejs代码文件</h2><p>在模块根目录下添加bin目录<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455701588490.png" alt=""><br>新建zoucz.js内容如下：   </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env node</span></div><div class="line"><span class="keyword">var</span> util=<span class="built_in">require</span>(<span class="string">"util"</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">"hello,i'm zouchegnzhuo,you can type command name/site/email"</span>);</div><div class="line"><span class="keyword">var</span> cmd=process.argv[<span class="number">2</span>];</div><div class="line"><span class="keyword">if</span>(cmd)&#123;</div><div class="line">    <span class="keyword">switch</span>(cmd)&#123;</div><div class="line">        <span class="keyword">case</span> <span class="string">"name"</span>:</div><div class="line">            <span class="built_in">console</span>.log(<span class="string">"邹成卓"</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="string">"site"</span>:</div><div class="line">            <span class="built_in">console</span>.log(<span class="string">"http://zoucz.com"</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> <span class="string">"email"</span>:</div><div class="line">            <span class="built_in">console</span>.log(<span class="string">"405966530@qq.com"</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>要注意的是，文件首行的 <strong><span style="color:red">#!/usr/bin/env node</span></strong> 一定要添加 ，这一行的意思是生成cmd文件的时候用什么路径的什么程序来运行上面的代码，文章末尾的demo中给出了不加的后果。    </p>
+<h2 id="在package-json中配置bin"><a href="#在package-json中配置bin" class="headerlink" title="在package.json中配置bin"></a>在package.json中配置bin</h2><p>在package.json中配置<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455701982810.png" alt=""><br>模块在npm install的时候会生成zoucz和zoucz_err两个cmd文件。    </p>
+<h2 id="发布模块-1"><a href="#发布模块-1" class="headerlink" title="发布模块"></a>发布模块</h2><p>添加好上面的配置后，发布模块，别的码农就可以安装使用此命令了。   </p>
+<h2 id="安装使用控制台命令程序"><a href="#安装使用控制台命令程序" class="headerlink" title="安装使用控制台命令程序"></a>安装使用控制台命令程序</h2><p>在cmd中 npm install -g zoucz ，就可以安装上面的模块，安装完成后可以使用zoucz命令和zoucz_err命令。<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455702296719.png" alt="">   </p>
+<p>zoucz_err是没有在js文件首行写#!/usr/bin/env node的后果：<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455702357644.png" alt=""><br>运行命令之后：<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455702374632.png" alt="">    </p>
+<p>我们顺着图片中的路径，在C:\Users\czzou\AppData\Roaming\npm目录下可以找到npm为我们创建的cmd文件路径：<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455702446611.png" alt=""><br>可以看到npm创建cmd文件的同时也创建了linux下使用的文件。<br>现在来看一下为什么执行zoucz_err会报错，分别打开两个cmd文件：<br>zoucz.cmd<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455702842735.png" alt=""><br>zoucz_err.cmd<br><img src="http://zoucz.com/blogimgs/2016-02-17/1455702869691.png" alt=""><br>后者压根就没有用node去执行那段代码，当然会报错了~<br>这里要注意的是npm install -g  全局安装的时候，cmd文件是被创建在上面的路径下的，如果没有-g选项，局部安装，则会被创建在项目根目录node_modules/.bin 目录下。    </p>
+<h1 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h1><p>npm可以帮我们做很多事情，做node开发的同学们都有必要花时间慢慢把npm的文档啃完<a href="https://docs.npmjs.com" target="_blank" rel="external">https://docs.npmjs.com</a><br>本文所使用的demo地址：<a href="https://github.com/zouchengzhuo/nodejsLearn/tree/master/zoucz" target="_blank" rel="external">https://github.com/zouchengzhuo/nodejsLearn/tree/master/zoucz</a>       </p>
+
+        <p class="this-page-link">本文链接：<a href="http://www.zoucz.com/blog/2016/02/17/node-cmd-app/">http://www.zoucz.com/blog/2016/02/17/node-cmd-app/</a></p>
+        <p><a class="to-comments" href="http://www.zoucz.com/blog/2016/02/17/node-cmd-app/#comments">☞ 参与评论</a></p>
+      </div>
+    </div>
+    
+    <div class="copyright" itemscope itemtype="http://schema.org/ProfilePage">
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">邹成卓 (zoucz)</a></li>
+		<li>发表日期:  2016-02-17 18:01:17</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/nodejs/">nodejs</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/nodejs/">nodejs</a>, <a class="article-tag-link" href="/blog/tags/npm/">npm</a>
+</li>
+		<li>版权声明: 自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+		<li>最后编辑时间: 2016-12-22 00:42:00</li>
+		<li>Feed订阅: <a href="/atom.xml"><i class="icon">&#x25c8;</i></a></li>
+	</ul>
+	<a href="/about/"><img src="/blogimgs/avatar150.png" /></a>
+</div>
+    <div class="share-article clearfix">
+    
+    <div class="ds-share" data-thread-key="node-cmd-app" data-title="nodejs模块发布及命令行程序开发" data-images="" data-content="前置技能npm工具为nodejs提供了一个模块和管理程序模块依赖的机制，当我们希望把模块贡献出去给他人使用时，可以把我们的程序发布到npm提供的公共仓库中，为了方便模块的管理，npm规定要使用一个叫package.jso..." data-url="http://www.zoucz.com/blog/2016/02/17/node-cmd-app/">
+      <div class="ds-share-inline">
+  <ul  class="ds-share-icons-16">
+    <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+    <li> <a class="ds-weibo" href="javascript:void(0);" data-service="weibo">新浪微博</a> </li>
+    <li> <a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a> </li>
+  </ul>
+  <div class="ds-share-icons-more">
+  </div>
+</div>
+    </div>
+    </div>
+    <em class="arrow-expend icon">&#xe618;
+      <ul>
+        <li><a href="/entry/">博客</a></li>
+        <li><a href="/message/">留言</a></li>
+        <li><a href="/about/">关于</a></li>
+        <li><a href="/demo/">实验室</a></li>
+        <li><a href="/comments/">最近评论</a></li>
+        <li><a href="/friends/">友情链接</a></li>
+      </ul>
+    </em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/2016/02/18/npm-scope/" class="post-prev">
+      <i class="icon">&#x261c;</i>
+      
+        <b>理解nodejs模块的scope</b>
+      
+    </a>
+  
+  
+    <a href="/blog/2016/02/17/npm-package/" class="post-next">
+      <b>npm package.json属性详解</b>
+      <i class="icon">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed">
+  
+  <a href="/blog/2016/02/18/npm-scope/" class="prev" title="理解nodejs模块的scope">
+    <i class="icon">&#xe600;</i>
+    
+    <b>理解nodejs模块的scope</b>
+    
+  </a>
+  
+  
+  <a href="/blog/2016/02/17/npm-package/" class="next" title="npm package.json属性详解">
+    <i class="icon">&#x261e;</i>
+    <b>npm package.json属性详解</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<div class="sidebar">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>设置</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">截屏分享</a></p>
+          <p><a href="" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="/" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/" target="_blank">Demo平台</a></p>
+          <p><a href="/" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>友链</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/atom.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/atom.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-copostntent">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="node-cmd-app"
+	   data-disqus-identifier="node-cmd-app">评论内容</a>
+	<a href="javascript: void(0);" id="footer-nav-on">相关文章</a>
+	<a href="/friends">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div>
+		
+
+
+
+<div class="ds-thread" data-thread-key="node-cmd-app" data-title="nodejs模块发布及命令行程序开发" data-url="http://www.zoucz.com/blog/2016/02/17/node-cmd-app/" data-name="zoucz">
+	<div class="ds-loading">
+		<img src="/blogimgs/loading.gif" alt="loading..."/>
+		<p>这网速真是弱爆了...客官稍等,评论还在加载~</p>
+	</div>
+</div>
+
+
+
+
+
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment"><span>（点击评论）</span>古今多少事，都付笑谈中！</div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span>2016-08-02 » </span><a href="/blog/2016/08/02/nodejs-unittest-mochajs/">javascript单元测试框架mochajs详解</a>
+				<div>关于单元测试的想法对于一些比较重要的项目，每次更新代码之后总是要自己测好久，担心一旦上线出了问题影响...</div>
+			</li>
+			
+			<li>
+				<span>2016-06-28 » </span><a href="/blog/2016/06/28/nodejs-get-time/">nodejs中获取时间戳、时间差</a>
+				<div>Nodejs中获取时间戳的方法有很多种，例如：new Date().getTime()Date.no...</div>
+			</li>
+			
+			<li>
+				<span>2016-06-27 » </span><a href="/blog/2016/06/27/npm-shrinkwrap/">理解npm-shrinkwrap</a>
+				<div>本文转自美团技术博客，原文：http://tech.meituan.com/npm-shrinkwr...</div>
+			</li>
+			
+			<li>
+				<span>2016-02-18 » </span><a href="/blog/2016/02/18/npm-scope/">理解nodejs模块的scope</a>
+				<div>描述原文档地址：https://docs.npmjs.com/misc/scope  所有npm模块...</div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+		<a href="/entry/" class="relative-to-comment-wrapper"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="h" target="_blank">小胡子哥的博客</a> » <span>0</span></li>
+			
+			<li><a href="/friends/">申请友链 »</a></li>
+		</ul>
+	</div>
+</div>
+			<div class="website-info">
+	<!--<span>Copyright &copy;2013-2016 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">湘ICP备14007107号-1</a></small></span>-->
+	<a href="/about#contact">联系方式</a>
+</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<a class="wechart icon">&#xe60d;<span><img src="/wechart.png" title="扫码添加邹成卓微信"/> </span></a>
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr">纠错模式</div>
+</body>
+</html>

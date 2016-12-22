@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <title>详解Javascript中正则表达式的使用 | 邹成卓的个人网站</title>
+  <meta name="viewport" content="width=device-width,height=device-height,user-scalable=0">
+  <meta name="email" content="405966530@qq.com">
+  <meta name="description" content="本文章转自我的博客园博客 原文地址     正则表达式用来处理字符串特别好用，在JavaScript中能用到正则表达式的地方有很多，本文对正则表达式基础知识和Javascript中正则表达式的使用做一个总结。第一部分简单列举了正则表达式在JavaScript中的使用场景；第二部分详细介绍正则表达式的">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="详解Javascript中正则表达式的使用 | 邹成卓的个人网站">
+  <meta property="og:url" content="http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/">
+  <meta property="og:site_name" content="详解Javascript中正则表达式的使用">
+  <meta property="og:description" content="本文章转自我的博客园博客 原文地址     正则表达式用来处理字符串特别好用，在JavaScript中能用到正则表达式的地方有很多，本文对正则表达式基础知识和Javascript中正则表达式的使用做一个总结。第一部分简单列举了正则表达式在JavaScript中的使用场景；第二部分详细介绍正则表达式的">
+  <link rel="shoticon" href="http://www.zoucz.com/favicon.ico" type="image/x-icon">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="renderer" content="webkit">
+  <link href="http://www.zoucz.com/blogimgs/app-icon.png" rel="apple-touch-icon-precomposed">
+  <link rel="alternate" type="application/rss+xml" href="http://www.zoucz.com/atom.xml" title="邹成卓的个人网站" />
+  <link rel="stylesheet" href="/public/css/style.css?v=20151229" type="text/css">
+  <script src="/public/js/jquery.js" type="text/javascript"></script>
+  <script src="/public/js/main.js?v=20151229" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="rainbow"></div>
+    <div class="container">
+  <div class="article" itemscope itemtype="http://schema.org/Article">
+    <div class="post">
+      <div class="post-title-wrapper">
+        <h1 class="post-title" itemprop="name">详解Javascript中正则表达式的使用</h1>
+        <a href="/entry/"><img src="/blogimgs/avatar150.png" alt="邹成卓" /></a>
+      </div>
+      <div class="post-info">
+        <span>作者: <a href="/about/" itemprop="author">邹成卓</a></span>
+        <span><time itemprop="timeCreated">2016-01-29 14:07:32</time></span>
+        <span>分类: 
+	<a class="category-link" href="/blog/categories/前端开发/">前端开发</a>
+
+</span>
+        <span>标签: 
+<a class="article-tag-link" href="/blog/tags/javascript/">javascript</a>, <a class="article-tag-link" href="/blog/tags/正则表达式/">正则表达式</a>
+</span>
+        <span>评论数: <a href="#comments"
+                      class="ds-thread-count hash-to-comments disqus-comment-count"
+                      data-thread-key="javascript-RegExp"
+                      data-disqus-identifier="javascript-RegExp"></a></span>
+      </div>
+      <div class="post-content" itemprop="articleBody">
+        <div class="shit-spider" title="防爬虫不注明出处">
+          <p>原文地址：<a href="http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/">http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/</a>，<a href="http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/#footer-nav-on">参与评论</a></p>
+          <img src="http://www.zoucz.com/blogimgs/avatar150.png">
+        </div>
+        <p>本文章转自我的博客园博客 <a href="http://www.cnblogs.com/tzyy/p/4927476.html" target="_blank" rel="external">原文地址</a>     </p>
+<p>正则表达式用来处理字符串特别好用，在JavaScript中能用到正则表达式的地方有很多，本文对正则表达式基础知识和Javascript中正则表达式的使用做一个总结。</p>
+<p>第一部分简单列举了正则表达式在JavaScript中的使用场景；第二部分详细介绍正则表达式的基础知识，写出一些例子方便理解。</p>
+<p>本文的内容是我自己看完正则表达式写法，和犀牛书中js正则表达式的章节后的总结，所以内容可能会有疏漏和不严谨的地方。若有大神路过发现文中错误的地方，欢迎斧正！</p>
+<h1 id="Javascript中正则表达式的使用"><a href="#Javascript中正则表达式的使用" class="headerlink" title="Javascript中正则表达式的使用"></a>Javascript中正则表达式的使用</h1><p>一个正则表达式可以认为是对一种字符片段的特征描述，而它的作用就是从一堆字符串中找出满足条件的子字符串。比如我在JavaScript中定义一个正则表达式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reg=<span class="regexp">/hello/</span>    或者  <span class="keyword">var</span> reg=<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"hello"</span>)</div></pre></td></tr></table></figure>
+<p>那么这个正则表达式可以用来从一堆字符串中找出 hello 这个单词。而“找出”这个动作，其结果可能是找出第一个hello的位置、用别的字符串替换hello、找出所有hello等等。下面就列举一下JavaScript中可以使用正则表达式的函数，简单介绍一下这些函数的作用，更复杂的用法会在第二部分中介绍。</p>
+<h2 id="String-prototype-search方法"><a href="#String-prototype-search方法" class="headerlink" title="String.prototype.search方法"></a>String.prototype.search方法</h2><p>用来找出原字符串中某个子字符串首次出现的index，没有则返回-1</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"abchello"</span>.search(<span class="regexp">/hello/</span>);  <span class="comment">//  3</span></div></pre></td></tr></table></figure>
+<h2 id="String-prototype-replace方法"><a href="#String-prototype-replace方法" class="headerlink" title="String.prototype.replace方法"></a>String.prototype.replace方法</h2><p>用来替换字符串中的子串</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"abchello"</span>.replace(<span class="regexp">/hello/</span>,<span class="string">"hi"</span>);   <span class="comment">//  "abchi"</span></div></pre></td></tr></table></figure>
+<h2 id="String-prototype-split方法"><a href="#String-prototype-split方法" class="headerlink" title="String.prototype.split方法"></a>String.prototype.split方法</h2><p>用来分割字符串</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"abchelloasdasdhelloasd"</span>.split(<span class="regexp">/hello/</span>);  <span class="comment">//["abc", "asdasd", "asd"]</span></div></pre></td></tr></table></figure>
+<h2 id="String-prototype-match方法"><a href="#String-prototype-match方法" class="headerlink" title="String.prototype.match方法"></a>String.prototype.match方法</h2><p>用来捕获字符串中的子字符串到一个数组中。默认情况下只捕获一个结果到数组中，正则表达式有”全局捕获“的属性时(定义正则表达式的时候添加参数g)，会捕获所有结果到数组中</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">"abchelloasdasdhelloasd"</span>.match(<span class="regexp">/hello/</span>);  <span class="comment">//["hello"]</span></div><div class="line"><span class="string">"abchelloasdasdhelloasd"</span>.match(<span class="regexp">/hello/g</span>);  <span class="comment">//["hello","hello"]</span></div></pre></td></tr></table></figure>
+<p>作为match参数的正则表达式在是否拥有全局属性的情况下，match方法的表现还不一样，这一点会在后边的正则表达式分组中讲到。</p>
+<h2 id="RegExp-prototype-test方法"><a href="#RegExp-prototype-test方法" class="headerlink" title="RegExp.prototype.test方法"></a>RegExp.prototype.test方法</h2><p>用来测试字符串中是否含有子字符串</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/hello/.test(<span class="string">"abchello"</span>);  <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h2 id="RegExp-prototype-exec方法"><a href="#RegExp-prototype-exec方法" class="headerlink" title="RegExp.prototype.exec方法"></a>RegExp.prototype.exec方法</h2><p>和字符串的match方法类似，这个方法也是从字符串中捕获满足条件的字符串到数组中，但是也有两个区别。</p>
+<ol>
+<li>exec方法一次只能捕获一份子字符串到数组中，无论正则表达式是否有全局属性</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reg=<span class="regexp">/hello/g</span>;</div><div class="line">reg.exec(<span class="string">"abchelloasdasdhelloasd"</span>);   <span class="comment">// ["hello"]</span></div></pre></td></tr></table></figure>
+<ol>
+<li>正则表达式对象(也就是JavaScript中的RegExp对象)有一个lastIndex属性，用来表示下一次从哪个位置开始捕获，每一次执行exec方法后，lastIndex就会往后推，直到找不到匹配的字符返回null，然后又从头开始捕获。 这个属性可以用来遍历捕获字符串中的子串。</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reg=<span class="regexp">/hello/g</span>;</div><div class="line">reg.lastIndex; <span class="comment">//0</span></div><div class="line">reg.exec(<span class="string">"abchelloasdasdhelloasd"</span>); <span class="comment">// ["hello"]</span></div><div class="line">reg.lastIndex; <span class="comment">//8</span></div><div class="line">reg.exec(<span class="string">"abchelloasdasdhelloasd"</span>); <span class="comment">// ["hello"]</span></div><div class="line">reg.lastIndex; <span class="comment">//19</span></div><div class="line">reg.exec(<span class="string">"abchelloasdasdhelloasd"</span>); <span class="comment">// null</span></div><div class="line">reg.lastIndex; <span class="comment">//0</span></div></pre></td></tr></table></figure>
+<h1 id="正则表达式基础"><a href="#正则表达式基础" class="headerlink" title="正则表达式基础"></a>正则表达式基础</h1><h2 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h2><p> 上面第一节以/hello/为例，但是实际应用中可能会遇到这样的需求： 匹配一串不确定的数字、匹配开始的位置、匹配结束的位置、匹配空白符。此时就可以用到元字符。</p>
+<p>元字符：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//匹配数字:  \d</span></div><div class="line"><span class="string">"ad3ad2ad"</span>.match(<span class="regexp">/\d/g</span>);  <span class="comment">// ["3", "2"]</span></div><div class="line"><span class="comment">//匹配除换行符以外的任意字符:  .</span></div><div class="line"><span class="string">"a\nb\rc"</span>.match(<span class="regexp">/./g</span>);  <span class="comment">// ["a", "b", "c"]</span></div><div class="line"><span class="comment">//匹配字母或数字或下划线 ： \w</span></div><div class="line"><span class="string">"a5_  汉字@!-="</span>.match(<span class="regexp">/\w/g</span>);  <span class="comment">// ["a", "5", "_"]</span></div><div class="line"><span class="comment">//匹配空白符:\s</span></div><div class="line"><span class="string">"\n \r"</span>.match(<span class="regexp">/\s/g</span>);  <span class="comment">//[" ", " ", ""] 第一个结果是\n，最后一个结果是\r</span></div><div class="line"><span class="comment">//匹配【单词开始或结束】的位置 ： \b</span></div><div class="line"><span class="string">"how are you"</span>.match(<span class="regexp">/\b\w/g</span>);  <span class="comment">//["h", "a", "y"] </span></div><div class="line"><span class="comment">// 匹配【字符串开始和结束】的位置:  开始 ^ 结束 $</span></div><div class="line"><span class="string">"how are you"</span>.match(<span class="regexp">/^\w/g</span>); <span class="comment">// ["h"]</span></div></pre></td></tr></table></figure>
+<p>反义元字符，写法就是把上面的小写字母变成大写的，比如 ， 匹配所有不是数字的字符： \D</p>
+<p>另外还有一些用来表示重复的元字符，会在下面的内容中介绍。</p>
+<h2 id="字符范围"><a href="#字符范围" class="headerlink" title="字符范围"></a>字符范围</h2><p>在 [] 中使用符号 -  ，可以用来表示字符范围。如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 匹配字母 a-z 之间所有字母</span></div><div class="line">/[a-z]/</div><div class="line"><span class="comment">// 匹配Unicode中 数字 0 到 字母 z 之间的所有字符</span></div><div class="line">/[<span class="number">0</span>-z]/ </div><div class="line"><span class="comment">// unicode编码查询地址：</span></div><div class="line"><span class="comment">//https://en.wikibooks.org/wiki/Unicode/Character_reference/0000-0FFF</span></div><div class="line"><span class="comment">//根据上面的内容，我们可以找出汉字的Unicode编码范围是 \u4E00 到 \u9FA5，所以我们可以写一个正则表达式来判断一个字符串中是否有汉字</span></div><div class="line">/[\u4E00-\u9FA5]/.test(<span class="string">"测试"</span>);  <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h2 id="重复-amp-贪婪与懒惰"><a href="#重复-amp-贪婪与懒惰" class="headerlink" title="重复 &amp; 贪婪与懒惰"></a>重复 &amp; 贪婪与懒惰</h2><p>首先来讲重复，当我们希望匹配一些重复的字符时，就需要用到一些和重复相关的正则表达式，写法如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//重复n次 &#123;n&#125;</span></div><div class="line"><span class="string">"test12"</span>.match(<span class="regexp">/test\d&#123;3&#125;/</span>); <span class="comment">// null</span></div><div class="line"><span class="string">"test123"</span>.match(<span class="regexp">/test\d&#123;3&#125;/</span>); <span class="comment">// ["test123"]</span></div><div class="line"><span class="comment">//重复n次或更多次  &#123;n,&#125;</span></div><div class="line"><span class="string">"test123"</span>.match(<span class="regexp">/test\d&#123;3,&#125;/</span>); <span class="comment">//  ["test123"]</span></div><div class="line"><span class="comment">//重复n到m次</span></div><div class="line"><span class="string">"test12"</span>.match(<span class="regexp">/test\d&#123;3,5&#125;/</span>); <span class="comment">//  null</span></div><div class="line"><span class="string">"test12345"</span>.match(<span class="regexp">/test\d&#123;3,5&#125;/</span>);  <span class="comment">// ["test12345"]</span></div><div class="line"><span class="string">"test12345678"</span>.match(<span class="regexp">/test\d&#123;3,5&#125;/</span>);  <span class="comment">// ["test12345"]</span></div><div class="line"><span class="comment">// 匹配字符test后边跟着数字，数字重复0次或多次</span></div><div class="line"><span class="string">"test"</span>.match(<span class="regexp">/test\d*/</span>); <span class="comment">// ["test"]</span></div><div class="line"><span class="string">"test123"</span>.match(<span class="regexp">/test\d*/</span>); <span class="comment">// ["test123"]</span></div><div class="line"><span class="comment">//重复一次或多次</span></div><div class="line"><span class="string">"test"</span>.match(<span class="regexp">/test\d+/</span>) ; <span class="comment">// null</span></div><div class="line"><span class="string">"test1"</span>.match(<span class="regexp">/test\d*/</span>); <span class="comment">//["test1"]</span></div><div class="line"><span class="comment">//重复一次或0次</span></div><div class="line"><span class="string">"test"</span>.match(<span class="regexp">/test\d?/</span>) ; <span class="comment">// null</span></div><div class="line"><span class="string">"test1"</span>.match(<span class="regexp">/test\d?/</span>); <span class="comment">//["test1"]</span></div></pre></td></tr></table></figure>
+<p>从上面的结果可以看到，字符test后边跟着的数字可以重复0次或多次时，正则表达式捕获的子字符串会返回尽量多的数字，比如/test\d*/匹配 test123 ，返回的是test123，而不是test或者test12。</p>
+<p>正则表达式捕获字符串时，在满足条件的情况下捕获尽可能多的字符串，这就是所谓的“贪婪模式”。</p>
+<p>对应的”懒惰模式“，就是在满足条件的情况下捕获尽可能少的字符串，使用懒惰模式的方法，就是在字符重复标识后面加上一个 “?”，写法如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 数字重复3~5次，满足条件的情况下返回尽可能少的数字</span></div><div class="line"><span class="string">"test12345"</span>.match(<span class="regexp">/test\d&#123;3,5&#125;?/</span>);  <span class="comment">//["test123"]</span></div><div class="line"><span class="comment">// 数字重复1次或更多，满足条件的情况下只返回一个数字</span></div><div class="line"><span class="string">"test12345"</span>.match(<span class="regexp">/test\d+?/</span>);  <span class="comment">// ["test1"]</span></div></pre></td></tr></table></figure>
+<h2 id="字符转义"><a href="#字符转义" class="headerlink" title="字符转义"></a>字符转义</h2><p>在正则表达式中元字符是有特殊的含义的，当我们要匹配元字符本身时，就需要用到字符转义，比如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/\./.test(<span class="string">"."</span>); <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h2 id="分组-amp-分支条件"><a href="#分组-amp-分支条件" class="headerlink" title="分组 &amp; 分支条件"></a>分组 &amp; 分支条件</h2><p>正则表达式可以用 “ ()  “ 来进行分组，具有分组的正则表达式除了正则表达式整体会匹配子字符串外，分组中的正则表达式片段也会匹配字符串。</p>
+<p>分组按照嵌套关系和前后关系，每个分组会分配得到一个数字组号，在一些场景中可以用组号来使用分组。</p>
+<p>在 replace、match、exec函数中，分组都能体现不同的功能。</p>
+<p><strong>replace函数</strong>中，第二个参数里边可以用 $+数字组号来指代第几个分组的内容，如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">" the best language in the world is java "</span>.replace(<span class="regexp">/(java)/</span>,<span class="string">"$1script"</span>); <span class="comment">// " the best language in the world is javascript "</span></div><div class="line"><span class="string">"/static/app1/js/index.js"</span>.replace(<span class="regexp">/(\/\w+)\.js/</span>,<span class="string">"$1-v0.0.1.js"</span>); <span class="comment">//"/static/app1/js/index-v0.0.1.js"    (\/\w+)分组匹配的就是 /index ，在第二个参数中为其添加上版本号</span></div></pre></td></tr></table></figure>
+<p><strong>match函数</strong>中，当正则表达式有全局属性时，会捕获所有满足正则表达式的子字符串</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">"abchellodefhellog"</span>.match(<span class="regexp">/h(ell)o/g</span>); <span class="comment">//["hello", "hello"]</span></div></pre></td></tr></table></figure>
+<p>但是当正则表达式没有全局属性，且正则表达式中有分组的时候，match函数只会返回整个正则表达式匹配的第一个结果，同时会将分组匹配到的字符串也放入结果数组中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="string">"abchellodefhellog"</span>.match(<span class="regexp">/h(ell)o/</span>); <span class="comment">//["hello", "ell"]</span></div><div class="line"><span class="comment">// 我们可以用match函数来分解url，获取协议、host、path、查询字符串等信息</span></div><div class="line"><span class="string">"http://www.baidu.com/test?t=5"</span>.match(<span class="regexp">/^((\w+):\/\/([\w\.]+))\/([^?]+)\?(\S+)$/</span>);</div><div class="line"><span class="comment">// ["http://www.baidu.com/test?t=5", "http://www.baidu.com", "http", "www.baidu.com", "test", "t=5"]</span></div></pre></td></tr></table></figure>
+<p><strong>exec函数</strong>在正则表达式中有分组的情况下，表现和match函数很像，只是无论正则表达式是否有全局属性，exec函数都只返回一个结果，并捕获分组的结果</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/h(ell)o/g.exec(<span class="string">"abchellodefhellog"</span>); <span class="comment">//["hello", "ell"]</span></div></pre></td></tr></table></figure>
+<p>当正则表达式需要匹配几种类型的结果时，可以用到<strong>分支条件</strong>，例如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">"asdasd hi  asdad hello asdasd"</span>.replace(<span class="regexp">/hi|hello/</span>,<span class="string">"nihao"</span>); <span class="comment">//"asdasd nihao  asdad hello asdasd"</span></div><div class="line"><span class="string">"asdasd hi  asdad hello asdasd"</span>.split(<span class="regexp">/hi|hello/</span>); <span class="comment">//["asdasd ", "  asdad ", " asdasd"]</span></div></pre></td></tr></table></figure>
+<p> 注意，分支条件影响它两边的所有内容， 比如 hi|hello  匹配的是hi或者hello，而不是 hiello 或者 hhello</p>
+<p>分组中的分支条件不会影响分组外的内容</p>
+<p>“abc acd  bbc bcd “.match(/(a|b)bc/g); //[“abc”, “bbc”]</p>
+<h2 id="后向引用"><a href="#后向引用" class="headerlink" title="后向引用"></a>后向引用</h2><p>正则表达式的分组可以在其后边的语句中通过  +数字组号来引用</p>
+<p>比如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 匹配重复的单词</span></div><div class="line">/(\b[a-zA-Z]+\b)\s+\<span class="number">1</span>/.exec(<span class="string">" asd sf  hello hello asd"</span>); <span class="comment">//["hello hello", "hello"]</span></div></pre></td></tr></table></figure>
+<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><p><strong> (?:exp)</strong> , 用此方式定义的分组，正则表达式会匹配分组中的内容，但是不再给此分组分配组号，此分组在replace、match等函数中的作用也会消失，效果如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/(hello)\sworld/.exec(<span class="string">"asdadasd hello world asdasd"</span>)  <span class="comment">// ["hello world", "hello"],正常捕获结果字符串和分组字符串</span></div><div class="line">/(?:hello)\sworld/.exec(<span class="string">"asdadasd hello world asdasd"</span>)  <span class="comment">// ["hello world"]</span></div><div class="line"></div><div class="line"><span class="string">"/static/app1/js/index.js"</span>.replace(<span class="regexp">/(\/\w+)\.js/</span>,<span class="string">"$1-v0.0.1.js"</span>); <span class="comment">//"/static/app1/js/index-v0.0.1.js"</span></div><div class="line"><span class="string">"/static/app1/js/index.js"</span>.replace(<span class="regexp">/(?:\/\w+)\.js/</span>,<span class="string">"$1-v0.0.1.js"</span>); <span class="comment">//"/static/app1/js$1-v0.0.1.js"</span></div></pre></td></tr></table></figure>
+<p><strong>(?=exp) </strong>这个分组用在正则表达式的后面，用来捕获exp前面的字符，分组中的内容不会被捕获，也不分配组号</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/hello\s(?=world)/.exec(<span class="string">"asdadasd hello world asdasd"</span>)  <span class="comment">// ["hello "]</span></div></pre></td></tr></table></figure>
+<p><strong>(?!exp) </strong> 和前面的断言相反，用在正则表达式的后面，捕获后面不是exp的字符，同样不捕获分组的内容，也不分配组号</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/hello\s(?!world)/.exec(<span class="string">"asdadasd hello world asdasd"</span>) <span class="comment">//null</span></div></pre></td></tr></table></figure>
+<h2 id="处理选项"><a href="#处理选项" class="headerlink" title="处理选项"></a>处理选项</h2><p>javascript中正则表达式支持的正则表达式有三个，g、i、m，分别代表全局匹配、忽略大小写、多行模式。三种属性可以自由组合共存。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 全局匹配  g </span></div><div class="line"><span class="string">"abchelloasdasdhelloasd"</span>.match(<span class="regexp">/hello/</span>);  <span class="comment">//["hello"]</span></div><div class="line"><span class="string">"abchelloasdasdhelloasd"</span>.match(<span class="regexp">/hello/g</span>);  <span class="comment">//["hello","hello"]</span></div><div class="line"></div><div class="line"><span class="comment">//忽略大小写 i</span></div><div class="line"><span class="string">"abchelloasdasdHelloasd"</span>.match(<span class="regexp">/hello/g</span>); <span class="comment">//["hello"]</span></div><div class="line"><span class="string">"abchelloasdasdHelloasd"</span>.match(<span class="regexp">/hello/gi</span>); <span class="comment">//["hello","Hello"]</span></div></pre></td></tr></table></figure>
+<p>在默认的模式下，元字符 ^ 和 $ 分别匹配字符串的开头和结尾处，模式 m 改变了这俩元字符的定义，让他们匹配一行的开头和结尾</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="string">"aadasd\nbasdc"</span>.match(<span class="regexp">/^[a-z]+$/g</span>);  <span class="comment">//null  字符串^和$之间有换行符，匹配不上 [a-z]+ ,故返回null</span></div><div class="line"><span class="string">"aadasd\nbasdc"</span>.match(<span class="regexp">/^[a-z]+$/gm</span>);  <span class="comment">// ["aadasd", "basdc"] ，改变^$的含义，让其匹配一行的开头和末尾，可以得到两行的结果</span></div></pre></td></tr></table></figure>
+
+        <p class="this-page-link">本文链接：<a href="http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/">http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/</a></p>
+        <p><a class="to-comments" href="http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/#comments">☞ 参与评论</a></p>
+      </div>
+    </div>
+    
+    <div class="copyright" itemscope itemtype="http://schema.org/ProfilePage">
+	<ul>
+		<li>作者:  <a href="/about/" itemprop="name">邹成卓 (zoucz)</a></li>
+		<li>发表日期:  2016-01-29 14:07:32</li>
+		<li>文章分类: 
+	<a class="category-link" href="/blog/categories/前端开发/">前端开发</a>
+
+</li>
+		<li>文章标签: 
+<a class="article-tag-link" href="/blog/tags/javascript/">javascript</a>, <a class="article-tag-link" href="/blog/tags/正则表达式/">正则表达式</a>
+</li>
+		<li>版权声明: 自由转载-非商用-非衍生-保持署名（<a href="http://creativecommons.org/licenses/by-nc-nd/3.0/deed.zh">创意共享3.0许可证</a>）</li>
+		<li>最后编辑时间: 2016-12-22 00:42:00</li>
+		<li>Feed订阅: <a href="/atom.xml"><i class="icon">&#x25c8;</i></a></li>
+	</ul>
+	<a href="/about/"><img src="/blogimgs/avatar150.png" /></a>
+</div>
+    <div class="share-article clearfix">
+    
+    <div class="ds-share" data-thread-key="javascript-RegExp" data-title="详解Javascript中正则表达式的使用" data-images="" data-content="本文章转自我的博客园博客 原文地址     正则表达式用来处理字符串特别好用，在JavaScript中能用到正则表达式的地方有很多，本文对正则表达式基础知识和Javascript中正则表达式的使用做一个总结。第一部分简单..." data-url="http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/">
+      <div class="ds-share-inline">
+  <ul  class="ds-share-icons-16">
+    <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+    <li> <a class="ds-weibo" href="javascript:void(0);" data-service="weibo">新浪微博</a> </li>
+    <li> <a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a> </li>
+  </ul>
+  <div class="ds-share-icons-more">
+  </div>
+</div>
+    </div>
+    </div>
+    <em class="arrow-expend icon">&#xe618;
+      <ul>
+        <li><a href="/entry/">博客</a></li>
+        <li><a href="/message/">留言</a></li>
+        <li><a href="/about/">关于</a></li>
+        <li><a href="/demo/">实验室</a></li>
+        <li><a href="/comments/">最近评论</a></li>
+        <li><a href="/friends/">友情链接</a></li>
+      </ul>
+    </em>
+  </div>
+  <div class="post-relative">
+<div class="page-relative">
+  
+    <a href="/blog/2016/01/29/date-iso/" class="post-prev">
+      <i class="icon">&#x261c;</i>
+      
+        <b>ISO日期格式标准</b>
+      
+    </a>
+  
+  
+    <a href="/blog/2016/01/29/get-file-from-clipboard/" class="post-next">
+      <b>浏览器中用JavaScript获取剪切板中的文件</b>
+      <i class="icon">&#xe602;</i>
+    </a>
+  
+</div>
+
+
+<div class="page-relative-fixed">
+  
+  <a href="/blog/2016/01/29/date-iso/" class="prev" title="ISO日期格式标准">
+    <i class="icon">&#xe600;</i>
+    
+    <b>ISO日期格式标准</b>
+    
+  </a>
+  
+  
+  <a href="/blog/2016/01/29/get-file-from-clipboard/" class="next" title="浏览器中用JavaScript获取剪切板中的文件">
+    <i class="icon">&#x261e;</i>
+    <b>浏览器中用JavaScript获取剪切板中的文件</b>
+  </a>
+  
+</div>
+</div>
+</div>
+<div class="sidebar">
+	<div class="func-btns func-btns-up">
+    <span class="func-item">
+        <i class="func-nav icon">&#xe618;<span>目录</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="javascript:void(0);" onclick="return false;">显示目录</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-font icon">&#xe604;<span>设置</span></i>
+        <div class="font-choose-box">
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <div class="font-choose bg-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-sun font-type-song"><i class="icon">&#xe61a;</i></a>
+            <a href="javascript:void(0)" onclick="return false;" class="bg-type bg-type-moon font-type-hei"><i class="icon">&#xe619;</i></a>
+          </div>
+          <div class="font-choose">
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-song">黑体</a>
+            <a href="javascript:void(0)" onclick="return false;" class="font-type font-type-hei">宋体</a>
+          </div>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="" target="_blank"><i class="func-fb icon">博<span>分享</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator sharecanvas"><a href="javascript: void(0);">截屏分享</a></p>
+          <p><a href="" target="_blank">微博关注</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-about icon">&#x263b;<span>关于</span></i>
+        <div>
+          <i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p><a href="/about/" class="func-about-link" target="_blank">关于作者</a></p>
+          <div id="followMeOnWeibo"></div>
+        </div>
+    </span>
+	</div>
+	<div class="func-btns">
+    <span class="func-item">
+        <a href="/" target="_blank"><i class="func-rss icon">&#xe603;<span>实验</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/" target="_blank">Demo平台</a></p>
+          <p><a href="/" target="_blank">Snippet应用</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <i class="func-fb icon">&#x2121;<span>留言</span></i>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <p class="seperator"><a href="/message/" target="_blank">给我留言</a></p>
+          <p><a href="/comments/" target="_blank">近期留言</a></p>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/friends/" target="_blank"><i class="func-rss icon">&#xe601;<span>友链</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i>
+          <a href="/friends/" target="_blank">友情链接</a>
+        </div>
+    </span>
+    <span class="func-item">
+        <a href="/atom.xml" target="_blank"><i class="func-rss icon">&#x25c8;<span>订阅</span></i></a>
+        <div><i class="left-arrow"></i><i class="left-arrow-clone"></i><a href="/atom.xml" target="_blank">订阅我吧！</a></div>
+    </span>
+	</div>
+</div>
+
+<div class="single-page-footer">
+<div class="footer">
+	<div class="footer-wraper">
+		<div class="footer-copostntent">
+			<div class="footer-nav">
+	<a href="javascript: void(0);" class="ds-thread-count disqus-comment-count"
+	   data-thread-key="javascript-RegExp"
+	   data-disqus-identifier="javascript-RegExp">评论内容</a>
+	<a href="javascript: void(0);" id="footer-nav-on">相关文章</a>
+	<a href="/friends">友情链接</a>
+</div>
+<div class="nav-detail">
+	<div>
+		
+
+
+
+<div class="ds-thread" data-thread-key="javascript-RegExp" data-title="详解Javascript中正则表达式的使用" data-url="http://www.zoucz.com/blog/2016/01/29/javascript-RegExp/" data-name="zoucz">
+	<div class="ds-loading">
+		<img src="/blogimgs/loading.gif" alt="loading..."/>
+		<p>这网速真是弱爆了...客官稍等,评论还在加载~</p>
+	</div>
+</div>
+
+
+
+
+
+	</div>
+	<div style="display:block;">
+		<div class="relative-to-comment"><span>（点击评论）</span>古今多少事，都付笑谈中！</div>
+		<div class="relative-wrapper">
+	<div class="relative-article">
+		
+		<ul>
+			<li>
+				<span>2016-07-19 » </span><a href="/blog/2016/07/19/gulp-webpack-vue/">做一个gulp+webpack+vue的单页应用开发架子</a>
+				<div>1.目标最近项目上的事情不多，根据我自己的开发习惯，决定开发一些简单的开发架子，方便以后事情多的时候...</div>
+			</li>
+			
+			<li>
+				<span>2016-01-29 » </span><a href="/blog/2016/01/29/date-iso/">ISO日期格式标准</a>
+				<div>时区简单理解https://zh.wikipedia.org/wiki/%E6%97%B6%E5%8...</div>
+			</li>
+			
+			<li>
+				<span>2016-01-29 » </span><a href="/blog/2016/01/29/get-file-from-clipboard/">浏览器中用JavaScript获取剪切板中的文件</a>
+				<div>在网页上编辑内容时，有时候需要插入图片，一般的做法是：  从网络上下载图片至本地 or  截图保存至...</div>
+			</li>
+			
+		</ul>
+	</div>
+</div>
+		<a href="/entry/" class="relative-to-comment-wrapper"><div class="relative-to-comment">回到首页</div></a>
+	</div>
+	<div class="friends-box">
+		<ul>
+			
+			<li><a href="h" target="_blank">小胡子哥的博客</a> » <span>0</span></li>
+			
+			<li><a href="/friends/">申请友链 »</a></li>
+		</ul>
+	</div>
+</div>
+			<div class="website-info">
+	<!--<span>Copyright &copy;2013-2016 <small><a href="http://www.miitbeian.gov.cn/" about="_blank">湘ICP备14007107号-1</a></small></span>-->
+	<a href="/about#contact">联系方式</a>
+</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="tools-wrapper">
+	<a class="gotop icon" href="#" title="回到顶部">&#x2191;</a>
+	<a class="wechart icon">&#xe60d;<span><img src="/wechart.png" title="扫码添加邹成卓微信"/> </span></a>
+	<a class="hash-to-comments icon" title="我要评论">&#x2121;</a>
+</div>
+<div class="fixerr">纠错模式</div>
+</body>
+</html>
