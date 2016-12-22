@@ -4,7 +4,7 @@
   <subtitle><![CDATA[Chengzhuo Zou's personal website]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.zoucz.com/"/>
-  <updated>2016-12-22T10:50:46.505Z</updated>
+  <updated>2016-12-22T10:56:45.241Z</updated>
   <id>http://www.zoucz.com/</id>
   
   <author>
@@ -18,8 +18,8 @@
     <title><![CDATA[nodejs进程管理工具pm2]]></title>
     <link href="http://www.zoucz.com/blog/2016/12/22/nodejs-pm2/"/>
     <id>http://www.zoucz.com/blog/2016/12/22/nodejs-pm2/</id>
-    <published>2016-12-22T10:50:46.000Z</published>
-    <updated>2016-12-22T10:50:46.505Z</updated>
+    <published>2016-12-22T10:56:45.000Z</published>
+    <updated>2016-12-22T10:56:45.241Z</updated>
     <content type="html"><![CDATA[<h1 id="nodejs存在的问题问题"><a href="#nodejs存在的问题问题" class="headerlink" title="nodejs存在的问题问题"></a>nodejs存在的问题问题</h1><p>nodejs作为一种单线程、单进程运行的程序，如果只是简单的使用的话，存在着如下一些问题：</p>
 <ul>
 <li>无法充分利用多核cpu机器的性能，</li>
@@ -50,54 +50,6 @@
       <category term="nodejs" scheme="http://www.zoucz.com/blog/tags/nodejs/"/>
     
       <category term="nodejs" scheme="http://www.zoucz.com/blog/categories/nodejs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[测试新编辑器]]></title>
-    <link href="http://www.zoucz.com/blog/2016/12/22/test-new-editor/"/>
-    <id>http://www.zoucz.com/blog/2016/12/22/test-new-editor/</id>
-    <published>2016-12-22T10:11:08.000Z</published>
-    <updated>2016-12-22T10:11:08.641Z</updated>
-    <content type="html"><![CDATA[<ul>
-<li>test</li>
-<li>test2</li>
-</ul>
-]]></content>
-    <summary type="html">
-    <![CDATA[<ul>
-<li>test</li>
-<li>test2</li>
-</ul>
-]]>
-    </summary>
-    
-      <category term="nodejs" scheme="http://www.zoucz.com/blog/tags/nodejs/"/>
-    
-      <category term="浏览器" scheme="http://www.zoucz.com/blog/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[测试]]></title>
-    <link href="http://www.zoucz.com/blog/2016/12/22/test-new%20editor/"/>
-    <id>http://www.zoucz.com/blog/2016/12/22/test-new editor/</id>
-    <published>2016-12-22T10:04:11.000Z</published>
-    <updated>2016-12-22T10:04:11.717Z</updated>
-    <content type="html"><![CDATA[<ul>
-<li>test</li>
-</ul>
-]]></content>
-    <summary type="html">
-    <![CDATA[<ul>
-<li>test</li>
-</ul>
-]]>
-    </summary>
-    
-      <category term="nodejs" scheme="http://www.zoucz.com/blog/tags/nodejs/"/>
-    
-      <category term="浏览器" scheme="http://www.zoucz.com/blog/categories/%E6%B5%8F%E8%A7%88%E5%99%A8/"/>
     
   </entry>
   
@@ -702,7 +654,7 @@
 <h1 id="license"><a href="#license" class="headerlink" title="license"></a>license</h1><p>你应该为你的模块制定一个协议，让用户知道他们有何权限来使用你的模块，以及使用该模块有哪些限制。最简单的，例如你用BSD-3-Clause 或 MIT之类的协议，如下：<br>{ “license” : “BSD-3-Clause” }<br>你可以在<a href="https://spdx.org/licenses/" target="_blank" rel="external">https://spdx.org/licenses/ </a>这个地址查阅协议列表 。    </p>
 <h1 id="和用户相关的属性-author-contributors"><a href="#和用户相关的属性-author-contributors" class="headerlink" title="和用户相关的属性: author, contributors"></a>和用户相关的属性: author, contributors</h1><p>“author”是一个码农， “contributors”是一个码农数组。 “person”是一个有一些描述属性的对象，如下 like this:   </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123; &quot;name&quot; : &quot;Barney Rubble&quot;</div><div class="line">, &quot;email&quot; : &quot;b@rubble.com&quot;</div><div class="line">, &quot;url&quot; : &quot;http://barnyrubble.tumblr.com/&quot;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>也可以按如下格式缩写，npm会帮着转换:<br>“Barney Rubble <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#x3a;&#98;&#64;&#114;&#x75;&#98;&#98;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;">&#98;&#64;&#114;&#x75;&#98;&#98;&#x6c;&#x65;&#x2e;&#x63;&#111;&#109;</a> (<a href="http://barnyrubble.tumblr.com/" target="_blank" rel="external">http://barnyrubble.tumblr.com/</a>)”<br>email和url属性实际上都是可以省略的。描述用户信息的还有一个”maintainers”（维护者）属性。   </p>
+<p>也可以按如下格式缩写，npm会帮着转换:<br>“Barney Rubble <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#98;&#64;&#114;&#x75;&#x62;&#x62;&#108;&#x65;&#46;&#99;&#111;&#x6d;">&#98;&#64;&#114;&#x75;&#x62;&#x62;&#108;&#x65;&#46;&#99;&#111;&#x6d;</a> (<a href="http://barnyrubble.tumblr.com/" target="_blank" rel="external">http://barnyrubble.tumblr.com/</a>)”<br>email和url属性实际上都是可以省略的。描述用户信息的还有一个”maintainers”（维护者）属性。   </p>
 <h1 id="files"><a href="#files" class="headerlink" title="files"></a>files</h1><p>“files”属性的值是一个数组，内容是模块下文件名或者文件夹名，如果是文件夹名，则文件夹下所有的文件也会被包含进来（除非文件被另一些配置排除了）<br>你也可以在模块根目录下创建一个”.npmignore”文件（windows下无法直接创建以”.”开头的文件，使用linux命令行工具创建如git bash），写在这个文件里边的文件即便被写在files属性里边也会被排除在外，这个文件的写法”.gitignore”类似。 </p>
 <h1 id="main"><a href="#main" class="headerlink" title="main"></a>main</h1><p>main属性指定了程序的主入口文件。意思是，如果你的模块被命名为foo，用户安装了这个模块并通过require(“foo”)来使用这个模块，那么require返回的内容就是main属性指定的文件中 module.exports指向的对象。<br>它应该指向模块根目录下的一个文件。对大对数模块而言，这个属性更多的是让模块有一个主入口文件，然而很多模块并不写这个属性。   </p>
 <h1 id="bin"><a href="#bin" class="headerlink" title="bin"></a>bin</h1><p>很多模块有一个或多个需要配置到PATH路径下的可执行模块，npm让这个工作变得十分简单（实际上npm本身也是通过bin属性安装为一个可执行命令的）<br>如果要用npm的这个功能，在package.json里边配置一个bin属性。bin属性是一个已命令名称为key，本地文件名称为value的map如下：   </p>
@@ -1326,7 +1278,7 @@
 <p>Reference-style 引用方式：<br><a href="https://www.mozilla.org" title="title text" target="_blank" rel="external">link text</a></p>
 <p>Relative reference to a repository file 引用存储文件：<br><a href="../path/file/readme.text" title="title text">link text</a></p>
 <p>还能这样使用：<br><a href="http://www.reddit.com" target="_blank" rel="external">link text</a></p>
-<p>Email 邮件：<br><a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#109;">&#x65;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#64;&#x65;&#120;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#x63;&#x6f;&#109;</a><br>Images 图片：</p>
+<p>Email 邮件：<br><a href="&#x6d;&#97;&#105;&#x6c;&#116;&#111;&#58;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#64;&#101;&#x78;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#x6f;&#109;">&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#64;&#101;&#x78;&#x61;&#109;&#112;&#108;&#101;&#46;&#x63;&#x6f;&#109;</a><br>Images 图片：</p>
 <p>Inline-style 内嵌方式：<br><img src="https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png" alt="alt text" title="title text"></p>
 <p>Reference-style 引用方式：<br><img src="https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png" alt="alt text" title="title text"></p>
 <p>Code and Syntax Highlighting 代码和语法高亮：</p>
