@@ -5,12 +5,13 @@
 * 使用react制作UI组件：https://facebook.github.io/react/docs/getting-started.html
 * 使用gulp+webpack打包项目：https://webpack.github.io/docs/
 
-## 使用配置
-* 安装node、git，全局安装gulp、webpack、hexo
-* 在本地git客户端和远程git仓库中配置好ssh key(为了自动部署):https://help.github.com/articles/generating-an-ssh-key/
-* 在本目录的上级目录中解压一个nw.js的项目 nwjs-v0.12.3-win-x64
-* 在本目录下 npm install
-* 运行 gulp 命令，即可启动编辑器程序
+## 编辑器使用步骤
+* ① 安装node、git，全局安装gulp、webpack、hexo
+（npm install gulp -g & npm install webpack -g & npm install hexo -g）
+* ② 在本地git客户端和远程git仓库中配置好ssh key(为了自动部署):https://help.github.com/articles/generating-an-ssh-key/
+* ③ 在本目录下 npm install
+* ④ 在上级目录 npm install
+* ⑤ 在本目录运行 gulp 命令，即可启动编辑器程序
 nwjs-v0.12.3-win-x64 目录下也会生成 editor.exe 程序，可创建此程序的快捷方式使用
 
 ## hexo相关配置
