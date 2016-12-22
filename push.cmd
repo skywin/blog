@@ -1,1 +1,1 @@
-git add . & git commit -am "push" & git push github master & git push coding master & pause
+git add . & git commit -am "push" & git push github master & git push coding master

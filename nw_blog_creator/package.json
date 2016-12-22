@@ -11,7 +11,7 @@
   "window": {
     "title": "blog writer",
     "icon": "avatar150.png",
-    "toolbar": false,
+    "toolbar": true,
     "width": 1300,
     "min_width": 1300,
     "height": 800,

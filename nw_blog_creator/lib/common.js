@@ -11,28 +11,33 @@ require("./toastr/toastr.css");
     // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
     // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
 $.extend({
-    success:function(msg,title)
+    success:function(msg,title,timeout)
     {
+        toastr.clear();
+        timeout=!!timeout?timeout:"5000";
         title = title||"";
         toastr.success(msg,title,{
             "positionClass": "toast-top-center",
-            "timeOut": "2000"
+            "timeOut": timeout
         });
     },
     warn:function(msg,title)
     {
+        toastr.clear();
         title = title||"";
         toastr.warning(msg,title,{
             "positionClass": "toast-top-center",
-            "timeOut": "2000"
+            "timeOut": "0"
         });
     },
-    error:function(msg,title)
+    error:function(msg,title,timeout)
     {
+        toastr.clear();
+        timeout=!!timeout?timeout:"5000";
         title = title||"";
         toastr.error(msg,title,{
             "positionClass": "toast-top-center",
-            "timeOut": "4000"
+            "timeOut": timeout
         });
     }
 });

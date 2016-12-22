@@ -17,6 +17,7 @@ var gulp=require("gulp"),
 gulp.task("initConfig",function(){
     var config={
         domain:"zoucz.com",
+        src:path.join(__dirname,"../"),
         base:__dirname,
         sbase:__dirname+"/../source",
         tags:__dirname+"/../source/_data/tags.json",

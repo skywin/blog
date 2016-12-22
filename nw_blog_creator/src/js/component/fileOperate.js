@@ -3,8 +3,10 @@
  */
 import $ from "jquery";
 import fs from "fs";
+import Q from "q";
 require("../../../lib/common.js");
 var config=require("../loadConfig"),
+    src=config.src,
     base=config.base,
     sbase=config.sbase,
     drafts=config.drafts,
@@ -14,6 +16,20 @@ var config=require("../loadConfig"),
     cates=config.cates,
     imgs=config.imgs,
     exec=require('child_process').exec;
+
+function execCmd(cmd){
+    var dfd=Q.defer();
+    console.log("==== cmd ====",cmd);
+    exec(cmd,function(error, stdout, stderr){
+        if(error){
+            dfd.reject(error);
+        }
+        else{
+            dfd.resolve();
+        }
+    });
+    return dfd.promise;
+}
 
 function createFile(title,filename,cates,tags,content){
     if(!filename) return false;
@@ -65,13 +81,24 @@ function publish(title,filename,cates,tags,content){
     if(fs.existsSync(drafts+"/"+filename+".md")){
         fs.unlinkSync(drafts+"/"+filename+".md");
     }
-    $.success("开始生成并发布");
     //切换到 posts 目录
     //d: & cd D:\learn\blog_gitcafe_hexo\nw_blog_creater\_post
-    var disk=posts.match(/^\w{1}:/)[0]
-    var command=disk+" & cd "+posts+" & hexo generate & hexo deploy";
-    exec(command,function(){
-        $.success("发布完成");
+    var diskName=posts.match(/^\w{1}:/)[0];
+    var pullCmd=diskName+" & cd "+src+" & pull.cmd";
+    var deployCmd=diskName+" & cd "+posts+" & hexo generate & hexo deploy";
+    var pushCmd=diskName+" & cd "+src+" & push.cmd";
+
+    $.success("正在拉取GIT仓库文件(1/4)",null,"0");
+    execCmd(pullCmd).then(function(){
+        $.success("正在生成文章并发布(2/4)",null,"0");
+        return execCmd(deployCmd);
+    }).then(function(){
+        $.success("正在推送文件至GIT仓库(3/4)",null,"0");
+        return execCmd(pushCmd);
+    }).then(function(){
+        $.success("文章发布完毕！");
+    }).catch(function(error){
+        $.error("出错了："+error.message);
     });
 }
 /**
