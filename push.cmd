@@ -1,1 +1,1 @@
-git add . & git commit -am "push" & git push github master & git push coding master
+git add . & git commit -am "push by zoucz's nw_blog_creator" & git push github master & git push coding master
