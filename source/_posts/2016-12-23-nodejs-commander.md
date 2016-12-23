@@ -1,9 +1,9 @@
-title: nodejs命令行管理模块commander
+title: nodejs命令行应用程序管理模块commander
 categories:
   - nodejs
 tags:
   - nodejs
-date: 2016-12-23 16:54:42
+date: 2016-12-23 17:08:18
 ---
 记得曾经写过一篇使用nodejs开发命令行程序的文章：[http://zoucz.com/blog/2016/02/17/node-cmd-app/](http://zoucz.com/blog/2016/02/17/node-cmd-app/ "http://zoucz.com/blog/2016/02/17/node-cmd-app/")    
 在这篇文章的demo文章中，我是这样管理命令行参数的：    
